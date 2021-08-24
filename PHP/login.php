@@ -42,7 +42,7 @@ function add_user($email, $password){
 
   $sql = "INSERT INTO `registration` (email, password) VALUES (:email, :password)";
   $insert = $pdo->prepare($sql);
-//  $insert->execute(['email' => $email, 'password' => $password]);
+  $insert->execute(['email' => $email, 'password' => $password]);
 
   $sqlSelect = "SELECT id FROM `registration`";
   $selectId = $pdo->prepare($sqlSelect);
