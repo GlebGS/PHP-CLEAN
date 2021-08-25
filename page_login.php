@@ -38,13 +38,19 @@
 
 <!--            ===================================================-->
 
-            <?php if (isset($_SESSION['registration_true'])): ?>
+            <?php if (isset($_SESSION['success'])): ?>
                 <div class="alert alert-success">
-                    <?php echo $_SESSION['registration_true']; unset($_SESSION['registration_true']); ?>
+                    <?php echo $_SESSION['success']; unset($_SESSION['success']); ?>
                 </div>
             <?php endif; ?>
 
-<!--            ===================================================-->
+            <?php if (isset($_SESSION['danger'])): ?>
+              <div class="alert alert-danger">
+                  <?php echo $_SESSION['danger']; unset($_SESSION['danger']); ?>
+                </div>
+            <?php endif; ?>
+
+            <!--            ===================================================-->
 
             <form action="PHP/login.php" method="post">
                 <div class="form-group">

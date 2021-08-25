@@ -10,50 +10,28 @@ function print_arr($arr){
 $email = $_POST['email'];
 $password = $_POST['password'];
 
-function get_email($email){
+function get_user($email, $password){
   $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
 
-  $sql = "SELECT email FROM `registration` WHERE email = :email";
+  $sql = "SELECT email, password FROM `registration` WHERE email = :email AND password = :password";
   $select = $pdo->prepare($sql);
-  $select->execute(['email' => $email]);
+  $select->execute(['email' => $email, 'password' => $password]);
   $result = $select->fetch(PDO::FETCH_ASSOC);
 
   if (!empty($result)){
-    $email_true = "<strong>Уведомление!</strong> Этот эл. адрес уже занят другим пользователем.";
-    $_SESSION['email_true'] = $email_true;
-
-    header("Location: /page_register.php");
-    exit();
-  }
-
-  if (empty($result)){
-    $registration_true = "Успешная регистрация.";
-    $_SESSION['registration_true'] = $registration_true;
+    header("Location: /users.php");
+    exit;
+  }else{
+    $danger = "<strong>Уведомление!</strong> Не верно введенные данные.";
+    $_SESSION['danger'] = $danger;
 
     header("Location: /page_login.php");
-    exit();
+    exit;
   }
 
   return $result;
 };
 
-function add_user($email, $password){
-  $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
+get_user($email, $password);
 
-  $sql = "INSERT INTO `registration` (email, password) VALUES (:email, :password)";
-  $insert = $pdo->prepare($sql);
-  $insert->execute(['email' => $email, 'password' => $password]);
-
-  $sqlSelect = "SELECT id FROM `registration`";
-  $selectId = $pdo->prepare($sqlSelect);
-  $selectId->execute();
-  $id = $selectId->fetch(PDO::FETCH_ASSOC);
-
-  return $id;
-};
-
-get_email($email);
-print_arr( add_user($email, $password) );
-
-header("Location: /page_register.php");
 ?>

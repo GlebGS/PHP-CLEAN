@@ -64,15 +64,15 @@
 <!--                                    <strong>Уведомление!</strong> Этот эл. адрес уже занят другим пользователем.-->
 <!--                                    ========================================-->
 
-                                    <?php if (isset($_SESSION['email_true'])): ?>
+                                    <?php if (isset($_SESSION['email_false'])): ?>
                                         <div class="alert alert-danger text-dark" role="alert">
-                                            <?php echo $_SESSION['email_true']; unset($_SESSION['email_true']); ?>
+                                            <?php echo $_SESSION['email_false'] ; unset($_SESSION['email_false']); ?>
                                         </div>
                                     <?php endif; ?>
 
 <!--                                    ========================================-->
 
-                                    <form id="js-login" novalidate="" action="PHP/login.php" method="post">
+                                    <form id="js-login" novalidate="" action="PHP/registration.php" method="post">
                                         <div class="form-group">
                                             <label class="form-label" for="emailverify">Email</label>
                                             <input type="email" id="emailverify" name="email" class="form-control" placeholder="Эл. адрес" required>
