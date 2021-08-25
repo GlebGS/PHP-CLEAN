@@ -1,3 +1,7 @@
+<?php
+    session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,9 +27,24 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="page_login.php">Войти</a>
-                    </li>
+
+<!--                    ===========================-->
+
+                    <?php if (isset($_SESSION['profile'])): ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><?php echo $_SESSION['profile']; ?></a>
+                        </li>
+
+                        <?else:?>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="page_login.php">Войти</a>
+                        </li>
+
+                    <?php endif; ?>
+
+<!--                    ===========================-->
+
                     <li class="nav-item">
                         <a class="nav-link" href="#">Выйти</a>
                     </li>

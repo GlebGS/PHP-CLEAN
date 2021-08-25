@@ -19,6 +19,9 @@ function get_user($email, $password){
   $result = $select->fetch(PDO::FETCH_ASSOC);
 
   if (!empty($result)){
+    $profile = 'Профиль';
+    $_SESSION['profile'] = $profile;
+
     header("Location: /users.php");
     exit;
   }else{
