@@ -1,5 +1,5 @@
-<?php
-    session_start();
+<?php session_start();
+error_reporting(0);
 ?>
 
 <!DOCTYPE html>
@@ -30,32 +30,40 @@
 
 <!--                    ===========================-->
 
-                    <?php if (isset($_SESSION['profile'])): ?>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#"><?php echo $_SESSION['profile']; ?></a>
-                        </li>
-
-                        <?else:?>
-
+                    <?php if (!isset($_SESSION['id'])): ?>
                         <li class="nav-item">
                             <a class="nav-link" href="page_login.php">Войти</a>
                         </li>
+                    <?php endif; ?>
 
+                    <!--                    ===========================-->
+
+                    <?php if (isset($_SESSION['id'])): ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><?php echo $_SESSION['log_out'];  ?></a>
+                        </li>
                     <?php endif; ?>
 
 <!--                    ===========================-->
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Выйти</a>
-                    </li>
                 </ul>
             </div>
         </nav>
 
+        <p style="margin: 10px 0 0 30px"><?php print_r("id: " . $_SESSION['id']); ?></p>
+
         <main id="js-page-content" role="main" class="page-content mt-3">
-            <div class="alert alert-success">
-                Профиль успешно обновлен.
-            </div>
+
+<!--                    ===========================-->
+
+            <?php if (isset($_SESSION['create_profile'])): ?>
+                <div class="alert alert-success">
+                    <?php echo $_SESSION['create_profile']; unset($_SESSION['create_profile']); ?>
+                </div>
+            <?php endif; ?>
+
+<!--                    ===========================-->
+
             <div class="subheader">
                 <h1 class="subheader-title">
                     <i class='subheader-icon fal fa-users'></i> Список пользователей
@@ -585,7 +593,7 @@
                 </div>
             </div>
         </main>
-     
+
         <!-- BEGIN Page Footer -->
         <footer class="page-footer" role="contentinfo">
             <div class="d-flex align-items-center flex-1 text-muted">
@@ -598,7 +606,7 @@
                 </ul>
             </div>
         </footer>
-        
+
     </body>
 
     <script src="js/vendors.bundle.js"></script>
