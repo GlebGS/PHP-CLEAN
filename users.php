@@ -50,7 +50,7 @@ error_reporting(0);
             </div>
         </nav>
 
-        <p style="margin: 10px 0 0 30px"><?php print_r("id: " . $_SESSION['id']); ?></p>
+        <p style="margin: 10px 0 0 30px"><?php print_r("UserID: " . $_SESSION['id']); ?></p>
 
         <main id="js-page-content" role="main" class="page-content mt-3">
 
