@@ -1,5 +1,7 @@
 <?php session_start();
 error_reporting(0);
+
+unset($_SESSION['id']);
 ?>
 
 <!DOCTYPE html>
@@ -56,11 +58,9 @@ error_reporting(0);
 
 <!--                    ===========================-->
 
-            <?php if (isset($_SESSION['create_profile'])): ?>
-                <div class="alert alert-success">
-                    <?php echo $_SESSION['create_profile']; unset($_SESSION['create_profile']); ?>
-                </div>
-            <?php endif; ?>
+<!--                <div class="alert alert-success">-->
+<!--                    Профиль успешно обновлен.-->
+<!--                </div>-->
 
 <!--                    ===========================-->
 
@@ -71,7 +71,14 @@ error_reporting(0);
             </div>
             <div class="row">
                 <div class="col-xl-12">
-                    <a class="btn btn-success" href="create_user.html">Добавить</a>
+
+<!--                    ===========================-->
+
+                    <?php if (isset($_SESSION['id'])): ?>
+                        <a class="btn btn-success" href="create_user.html">Добавить</a>
+                    <?php endif; ?>
+
+<!--                    ===========================-->
 
                     <div class="border-faded bg-faded p-3 mb-g d-flex mt-3">
                         <input type="text" id="js-filter-contacts" name="filter-contacts" class="form-control shadow-inset-2 form-control-lg" placeholder="Найти пользователя">
