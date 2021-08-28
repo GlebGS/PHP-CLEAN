@@ -14,7 +14,7 @@ function login($email, $password){
   $select->execute(['email' => $email, 'password' => md5($password)]);
   $result = $select->fetch(PDO::FETCH_ASSOC);
 
-// Получить ID юзера
+// Получить ID пользователя
   get_userID($result['id']);
 
   if (!empty($result)){ redirect("users.php"); }
@@ -26,7 +26,7 @@ function login($email, $password){
   return $result;
 }
 
-// Получить ID пользователя
+// Записать ID пользователя в СЕССИЮ
 function get_userID($id){ create_session('id', $id); }
 
 // Создать СЕССИЮ
