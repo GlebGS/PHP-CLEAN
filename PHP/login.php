@@ -5,13 +5,13 @@ $email = $_POST['email'];
 $password = $_POST['password'];
 
 // function get user
-function get_user($email, $password){
+function login($email, $password){
   $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
 
 //  looking user with such email and password
   $sql = "SELECT * FROM users WHERE email = :email AND password = :password";
   $select = $pdo->prepare($sql);
-  $select->execute(['email' => $email, 'password' => $password]);
+  $select->execute(['email' => $email, 'password' => md5($password)]);
   $result = $select->fetch(PDO::FETCH_ASSOC);
 
 // get user ID
@@ -35,5 +35,5 @@ function create_session( $key, $message ){ $_SESSION["$key"] = $message; }
 // Redirect to file
 function redirect($link){ header("Location: /$link"); exit(); }
 
-get_user($email, $password);
+login($email, $password);
 

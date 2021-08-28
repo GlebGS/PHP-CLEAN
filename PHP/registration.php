@@ -34,8 +34,7 @@ function add_user($email, $password)
 //  insert data base
   $sql = "INSERT INTO `users` (email, password) VALUES (:email, :password)";
   $insert = $pdo->prepare($sql);
-  $insert->execute(['email' => $email, 'password' => $password]);
-
+  $insert->execute(['email' => $email, 'password' => md5($password)]);
 }
 
 // Set and display flash message
