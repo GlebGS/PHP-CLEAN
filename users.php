@@ -1,7 +1,7 @@
 <?php session_start();
 error_reporting(0);
 
-unset($_SESSION['id']);
+//unset($_SESSION['id']);
 ?>
 
 <!DOCTYPE html>
@@ -42,7 +42,7 @@ unset($_SESSION['id']);
 
                     <?php if (isset($_SESSION['id'])): ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="#"><?php echo $_SESSION['log_out'];  ?></a>
+                            <a class="nav-link" href="#">Выйти</a>
                         </li>
                     <?php endif; ?>
 

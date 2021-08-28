@@ -18,10 +18,8 @@ function get_user($email, $password){
   get_userID($result['id']);
 
 //  If TRUE
-  if (!empty($result)){
-    create_session("log_out", "Выйти");
-    redirect("users.php");
-  }else{
+  if (!empty($result)){ redirect("users.php"); }
+  else{
     create_session( "danger", "<strong>Уведомление!</strong> Не верно введенные данные.");
     redirect("page_login.php");
   }
