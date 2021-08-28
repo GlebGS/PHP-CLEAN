@@ -1,7 +1,5 @@
 <?php session_start();
 error_reporting(0);
-
-//unset($_SESSION['id']);
 ?>
 
 <!DOCTYPE html>
@@ -42,7 +40,7 @@ error_reporting(0);
 
                     <?php if (isset($_SESSION['id'])): ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Выйти</a>
+                            <a class="nav-link" href="PHP/log_out.php">Выйти</a>
                         </li>
                     <?php endif; ?>
 
@@ -52,7 +50,9 @@ error_reporting(0);
             </div>
         </nav>
 
-        <p style="margin: 10px 0 0 30px"><?php print_r("UserID: " . $_SESSION['id']); ?></p>
+        <?php if (isset($_SESSION['id']) || isset($_SESSION['role'])): ?>
+            <p style="margin: 10px 0 0 30px"><?php echo "UserID: " . "<b>" . $_SESSION['id'] . "</b>" ?></p>
+        <?php endif; ?>
 
         <main id="js-page-content" role="main" class="page-content mt-3">
 
