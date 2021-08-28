@@ -3,21 +3,19 @@ session_start();
 
 create_session( "success", "Регистрация успешна." );
 
-// data
 $email = $_POST['email'];
 $password = $_POST['password'];
 
-// function get email
+// Функция валидации EMAIL
 function get_email($email){
   $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
 
-//  select in database
+//  Поиск EMAIL в БАЗЕ ДАННЫХ
   $sql = "SELECT email FROM `users` WHERE email = :email";
   $select = $pdo->prepare($sql);
   $select->execute(['email' => $email]);
   $result = $select->fetch(PDO::FETCH_ASSOC);
 
-//  If email was found
   if (!empty($result)){
     create_session( "email_false", "<strong>Уведомление!</strong> Этот эл. адрес уже занят другим пользователем." );
     redirect( "page_register.php" );
@@ -26,20 +24,20 @@ function get_email($email){
   return $result;
 }
 
-// function insert in data base
+// Функция записи в БАЗУ ДАННЫХ
 function add_user($email, $password)
 {
   $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
 
-//  insert data base
+//  Внести в БАЗУ ДАННЫХ
   $sql = "INSERT INTO `users` (email, password) VALUES (:email, :password)";
   $insert = $pdo->prepare($sql);
   $insert->execute(['email' => $email, 'password' => md5($password)]);
 }
 
-// Set and display flash message
+// Создать СЕССИЮ
 function create_session( $key, $message ){ $_SESSION["$key"] = $message; }
-// Redirect to file
+// Создать путь
 function redirect($link){ header("Location: /$link"); exit(); }
 
 get_email($email);

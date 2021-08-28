@@ -4,20 +4,19 @@ session_start();
 $email = $_POST['email'];
 $password = $_POST['password'];
 
-// function get user
+// Функция ЛОГИНА
 function login($email, $password){
   $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
 
-//  looking user with such email and password
+//  Проверка EMAIL и PASSWORD
   $sql = "SELECT * FROM users WHERE email = :email AND password = :password";
   $select = $pdo->prepare($sql);
   $select->execute(['email' => $email, 'password' => md5($password)]);
   $result = $select->fetch(PDO::FETCH_ASSOC);
 
-// get user ID
+// Получить ID юзера
   get_userID($result['id']);
 
-//  If TRUE
   if (!empty($result)){ redirect("users.php"); }
   else{
     create_session( "danger", "<strong>Уведомление!</strong> Не верно введенные данные.");
@@ -27,12 +26,12 @@ function login($email, $password){
   return $result;
 }
 
-// get user ID
+// Получить ID пользователя
 function get_userID($id){ create_session('id', $id); }
 
-// Set and display flash message
+// Создать СЕССИЮ
 function create_session( $key, $message ){ $_SESSION["$key"] = $message; }
-// Redirect to file
+// Создать путь
 function redirect($link){ header("Location: /$link"); exit(); }
 
 login($email, $password);
