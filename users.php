@@ -108,7 +108,7 @@ $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
             <div class="row" id="js-contacts">
 
                 <?php
-                    $sql = "SELECT * FROM `users`";
+                    $sql = "SELECT * FROM users";
                     $select = $pdo->prepare($sql);
                     $select->execute();
                     $user = $select->fetchAll(PDO::FETCH_ASSOC);
@@ -255,28 +255,6 @@ $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
                                             <p href="javascript:void(0);" class="fs-xl text-truncate text-truncate-lg text-secondary" data-toggle="dropdown" aria-expanded="false">
                                               <?php echo $item['name']; ?>
                                             </p>
-
-
-                                            <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="edit.html">
-                                                    <i class="fa fa-edit"></i>
-                                                    Редактировать</a>
-                                                <a class="dropdown-item" href="security.html">
-                                                    <i class="fa fa-lock"></i>
-                                                    Безопасность</a>
-                                                <a class="dropdown-item" href="status.html">
-                                                    <i class="fa fa-sun"></i>
-                                                    Установить статус</a>
-                                                <a class="dropdown-item" href="media.html">
-                                                    <i class="fa fa-camera"></i>
-                                                    Загрузить аватар
-                                                </a>
-                                                <a href="#" class="dropdown-item" onclick="return confirm('are you sure?');">
-                                                    <i class="fa fa-window-close"></i>
-                                                    Удалить
-                                                </a>
-                                            </div>
-
 
                                             <span class="text-truncate text-truncate-xl"><?php echo $item['position']; ?></span>
                                         </div>

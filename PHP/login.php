@@ -9,7 +9,10 @@ function login($email, $password){
   $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
 
 //  Проверка EMAIL и PASSWORD
-  $sql = "SELECT email, password FROM login WHERE email = :email AND password = :password";
+  $sql = <<<HEARDOC
+    SELECT email, password FROM login WHERE email = :email AND password = :password
+HEARDOC;
+
   $select = $pdo->prepare($sql);
   $select->execute(['email' => $email, 'password' => md5($password)]);
   $result = $select->fetch(PDO::FETCH_ASSOC);
@@ -29,7 +32,10 @@ function login($email, $password){
 function get_userID($email, $password){
   $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
 
-  $sql = "SELECT id, role FROM login WHERE email = :email AND password = :password";
+  $sql = <<<HEARDOC
+    SELECT id, role FROM login WHERE email = :email AND password = :password
+HEARDOC;
+
   $select = $pdo->prepare($sql);
   $select->execute(['email' => $email, 'password' => md5($password)]);
   $result = $select->fetch(PDO::FETCH_ASSOC);
