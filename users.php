@@ -116,6 +116,9 @@ $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
 
                 <?php if ($_SESSION['role'] == 'admin'): ?>
                     <?php foreach ($user as $item): ?>
+
+<!--                        Если ADMIN, то работают можно добавить ПОЛЬЗОВАТЕЛЯ и весь прочий функционал-->
+
                         <div class="col-xl-4">
                             <div id="<?php echo "c_" . $item['id']; ?>" class="card border shadow-0 mb-g shadow-sm-hover" data-filter-tags="<?php echo $item['name']; ?>">
                                 <div class="card-body border-faded border-top-0 border-left-0 border-right-0 rounded-top">
@@ -188,6 +191,9 @@ $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
                     <?php endforeach; ?>
                 <?php elseif($_SESSION['role'] == 'user'): ?>
                   <?php foreach ($user as $item): ?>
+
+<!--                    Если USER, то он не может ДОБАВИТЬ пользователя и ИЗМЕНЯТЬ его-->
+
                         <div class="col-xl-4">
                             <div id="<?php echo "c_" . $item['id']; ?>" class="card border shadow-0 mb-g shadow-sm-hover" data-filter-tags="<?php echo $item['name']; ?>">
                                 <div class="card-body border-faded border-top-0 border-left-0 border-right-0 rounded-top">
@@ -236,6 +242,9 @@ $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
                   <?php endforeach; ?>
                 <?php else: ?>
                     <?php foreach ($user as $item): ?>
+
+<!--                        Если пользователь НЕ АВТОРИЗОВАН, то он не может ни ДОБАВИТЬ, ни ПОСМОТРЕТЬ ПОДРОБНУЮ ИНФОРМАЦИЮ о данном пользователе -->
+
                         <div class="col-xl-4">
                             <div id="<?php echo "c_" . $item['id']; ?>" class="card border shadow-0 mb-g shadow-sm-hover" data-filter-tags="<?php echo $item['name']; ?>">
                                 <div class="card-body border-faded border-top-0 border-left-0 border-right-0 rounded-top">
