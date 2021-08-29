@@ -11,7 +11,7 @@ function get_email($email){
   $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
 
 //  Поиск EMAIL в БАЗЕ ДАННЫХ
-  $sql = "SELECT email FROM `users` WHERE email = :email";
+  $sql = "SELECT email FROM login WHERE email = :email";
   $select = $pdo->prepare($sql);
   $select->execute(['email' => $email]);
   $result = $select->fetch(PDO::FETCH_ASSOC);
@@ -30,7 +30,7 @@ function add_user($email, $password)
   $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
 
 //  Внести в БАЗУ ДАННЫХ
-  $sql = "INSERT INTO `users` (email, password) VALUES (:email, :password)";
+  $sql = "INSERT INTO login (email, password) VALUES (:email, :password)";
   $insert = $pdo->prepare($sql);
   $insert->execute(['email' => $email, 'password' => md5($password)]);
 }

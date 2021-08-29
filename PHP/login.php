@@ -9,7 +9,7 @@ function login($email, $password){
   $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
 
 //  Проверка EMAIL и PASSWORD
-  $sql = "SELECT email, password FROM users WHERE email = :email AND password = :password";
+  $sql = "SELECT email, password FROM login WHERE email = :email AND password = :password";
   $select = $pdo->prepare($sql);
   $select->execute(['email' => $email, 'password' => md5($password)]);
   $result = $select->fetch(PDO::FETCH_ASSOC);
@@ -25,16 +25,17 @@ function login($email, $password){
   return $result;
 }
 
-// Записать ID пользователя в СЕССИЮ
+// Записать ID и ROLE пользователя в СЕССИЮ
 function get_userID($email, $password){
   $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
 
-  $sql = "SELECT id FROM users WHERE email = :email AND password = :password";
+  $sql = "SELECT id, role FROM login WHERE email = :email AND password = :password";
   $select = $pdo->prepare($sql);
   $select->execute(['email' => $email, 'password' => md5($password)]);
   $result = $select->fetch(PDO::FETCH_ASSOC);
 
   create_session('id', $result['id']);
+  create_session('role', $result['role']);
 
   return $result;
 }
