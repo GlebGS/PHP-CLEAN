@@ -117,7 +117,7 @@ $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
                 <?php if ($_SESSION['role'] == 'admin'): ?>
                     <?php foreach ($user as $item): ?>
 
-<!--                        Если ADMIN, то работают можно добавить ПОЛЬЗОВАТЕЛЯ и весь прочий функционал-->
+<!--                        Если ADMIN, то он можно добавить ПОЛЬЗОВАТЕЛЯ и весь прочий функционал-->
 
                         <div class="col-xl-4">
                             <div id="<?php echo "c_" . $item['id']; ?>" class="card border shadow-0 mb-g shadow-sm-hover" data-filter-tags="<?php echo $item['name']; ?>">
