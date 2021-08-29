@@ -114,10 +114,10 @@ $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
                     $user = $select->fetchAll(PDO::FETCH_ASSOC);
                 ?>
 
+              <?php foreach($user as $item): ?>
                 <?php if ($_SESSION['role'] == 'admin'): ?>
-                    <?php foreach ($user as $item): ?>
 
-<!--                        Если ADMIN, то он может добавить ПОЛЬЗОВАТЕЛЯ и весь прочий функционал-->
+<!--                        Если ADMIN, то он можетчё добавить ПОЛЬЗОВАТЕЛЯ и весь прочий функционал-->
 
                         <div class="col-xl-4">
                             <div id="<?php echo "c_" . $item['id']; ?>" class="card border shadow-0 mb-g shadow-sm-hover" data-filter-tags="<?php echo $item['name']; ?>">
@@ -188,9 +188,8 @@ $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
                                 </div>
                             </div>
                         </div>
-                    <?php endforeach; ?>
+
                 <?php elseif($_SESSION['role'] == 'user'): ?>
-                  <?php foreach ($user as $item): ?>
 
 <!--                    Если USER, то он не может ДОБАВИТЬ пользователя и ИЗМЕНЯТЬ его-->
 
@@ -239,9 +238,8 @@ $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
                                 </div>
                             </div>
                         </div>
-                  <?php endforeach; ?>
+
                 <?php else: ?>
-                    <?php foreach ($user as $item): ?>
 
 <!--                        Если пользователь НЕ АВТОРИЗОВАН, то он не может ни ДОБАВИТЬ, ни ПОСМОТРЕТЬ ПОДРОБНУЮ ИНФОРМАЦИЮ о данном пользователе -->
 
@@ -287,8 +285,8 @@ $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
 
                             </div>
                         </div>
-                    <?php endforeach; ?>
                 <?php endif; ?>
+              <?php endforeach; ?>
 
             </div>
 
