@@ -3,6 +3,34 @@ error_reporting(0);
 
 $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
 
+/*
+
+oliver.kopyov@smartadminwebapp.com
+one
+
+Alita@smartadminwebapp.com
+two
+
+john.cook@smartadminwebapp.com
+three
+
+jim.ketty@smartadminwebapp.com
+four
+
+john.oliver@smartadminwebapp.com
+five
+
+sarah.mcbrook@smartadminwebapp.com
+six
+
+jimmy.fallan@smartadminwebapp.com
+seven
+
+arica.grace@smartadminwebapp.com
+eight
+
+ * */
+
 ?>
 
 <!DOCTYPE html>
@@ -53,17 +81,15 @@ $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
             </div>
         </nav>
 
-        <?php if ($_SESSION['id'] ): ?>
-            <p style="margin: 10px 0 0 30px"><?php echo "UserID: " . "<b>" . $_SESSION['id'] . "</b>" . "&ensp;" . "Role: " . "<b>" . $_SESSION['role'] . "</b>" ?></p>
-        <?php endif; ?>
-
         <main id="js-page-content" role="main" class="page-content mt-3">
 
 <!--                    ===========================-->
 
-<!--                <div class="alert alert-success">-->
-<!--                    Профиль успешно обновлен.-->
-<!--                </div>-->
+            <?php if (isset($_SESSION['create_user'])): ?>
+                <div class="alert alert-success">
+                    <?php echo $_SESSION['create_user']; unset($_SESSION['create_user']); ?>
+                </div>
+            <?php endif; ?>
 
 <!--                    ===========================-->
 
@@ -71,6 +97,10 @@ $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
                 <h1 class="subheader-title">
                     <i class='subheader-icon fal fa-users'></i> Список пользователей
                 </h1>
+
+              <?php if ($_SESSION['id'] ): ?>
+                  <span style="margin: 10px 0 0 30px"><?php echo "UserID: " . "<b>" . $_SESSION['id'] . "</b>" . "&ensp;" . "Role: " . "<b>" . $_SESSION['role'] . "</b>" ?></span>
+              <?php endif; ?>
             </div>
             <div class="row">
                 <div class="col-xl-12">
@@ -78,7 +108,7 @@ $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
 <!--                    ===========================-->
 
                     <?php if ($_SESSION['role'] == 'admin'): ?>
-                        <a class="btn btn-success" href="create_user.html">Добавить</a>
+                        <a class="btn btn-success" href="create_user.php">Добавить</a>
                     <?php else: ?>
                         <p></p>
                     <?php endif; ?>
@@ -108,162 +138,161 @@ $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
             <div class="row" id="js-contacts">
 
                 <?php
-                    $sql = "SELECT * FROM users";
+                    $sql = "SELECT * FROM users JOIN login ON user_id = id WHERE user_id > 1";
                     $select = $pdo->prepare($sql);
                     $select->execute();
                     $user = $select->fetchAll(PDO::FETCH_ASSOC);
                 ?>
 
               <?php foreach($user as $item): ?>
-                <?php if ($_SESSION['role'] == 'admin'): ?>
+                    <?php if ($_SESSION['role'] == 'admin'): ?>
 
-<!--                        Если ADMIN, то он можетчё добавить ПОЛЬЗОВАТЕЛЯ и весь прочий функционал-->
+    <!--                        Если ADMIN, то он может добавить ПОЛЬЗОВАТЕЛЯ и весь прочий функционал-->
 
-                        <div class="col-xl-4">
-                            <div id="<?php echo "c_" . $item['id']; ?>" class="card border shadow-0 mb-g shadow-sm-hover" data-filter-tags="<?php echo $item['name']; ?>">
-                                <div class="card-body border-faded border-top-0 border-left-0 border-right-0 rounded-top">
-                                    <div class="d-flex flex-row align-items-center">
-                                                <span class="status status-<?php echo $item['status']; ?> mr-3">
-                                                    <span class="rounded-circle profile-image d-block " style="background-image:url('<?php echo $item['img']; ?>'); background-size: cover;"></span>
-                                                </span>
-                                        <button class="js-expand-btn btn btn-sm btn-default d-none" data-toggle="collapse" data-target="#<?php echo "c_" . $item['id']; ?> > .card-body + .card-body" aria-expanded="false">
-                                            <span class="collapsed-hidden">+</span>
-                                            <span class="collapsed-reveal">-</span>
-                                        </button>
-                                        <div class="info-card-text flex-1">
-                                            <a href="javascript:void(0);" class="fs-xl text-truncate text-truncate-lg text-info" data-toggle="dropdown" aria-expanded="false">
-                                                <?php echo $item['name']; ?>
-                                                <i class="fal fas fa-cog fa-fw d-inline-block ml-1 fs-md"></i>
-                                                <i class="fal fa-angle-down d-inline-block ml-1 fs-md"></i>
-                                            </a>
-
-
-                                            <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="edit.html">
-                                                    <i class="fa fa-edit"></i>
-                                                    Редактировать</a>
-                                                <a class="dropdown-item" href="security.html">
-                                                    <i class="fa fa-lock"></i>
-                                                    Безопасность</a>
-                                                <a class="dropdown-item" href="status.html">
-                                                    <i class="fa fa-sun"></i>
-                                                    Установить статус</a>
-                                                <a class="dropdown-item" href="media.html">
-                                                    <i class="fa fa-camera"></i>
-                                                    Загрузить аватар
+                            <div class="col-xl-4">
+                                <div id="<?php echo "c_" . $item['id']; ?>" class="card border shadow-0 mb-g shadow-sm-hover" data-filter-tags="<?php echo $item['name']; ?>">
+                                    <div class="card-body border-faded border-top-0 border-left-0 border-right-0 rounded-top">
+                                        <div class="d-flex flex-row align-items-center">
+                                                    <span class="status status-<?php echo $item['status']; ?> mr-3">
+                                                        <span class="rounded-circle profile-image d-block " style="background-image:url('<?php echo $item['img']; ?>'); background-size: cover;"></span>
+                                                    </span>
+                                            <button class="js-expand-btn btn btn-sm btn-default d-none" data-toggle="collapse" data-target="#<?php echo "c_" . $item['id']; ?> > .card-body + .card-body" aria-expanded="false">
+                                                <span class="collapsed-hidden">+</span>
+                                                <span class="collapsed-reveal">-</span>
+                                            </button>
+                                            <div class="info-card-text flex-1">
+                                                <a href="javascript:void(0);" class="fs-xl text-truncate text-truncate-lg text-info" data-toggle="dropdown" aria-expanded="false">
+                                                    <?php echo $item['name']; ?>
+                                                    <i class="fal fas fa-cog fa-fw d-inline-block ml-1 fs-md"></i>
+                                                    <i class="fal fa-angle-down d-inline-block ml-1 fs-md"></i>
                                                 </a>
-                                                <a href="#" class="dropdown-item" onclick="return confirm('are you sure?');">
-                                                    <i class="fa fa-window-close"></i>
-                                                    Удалить
+
+
+                                                <div class="dropdown-menu">
+                                                    <a class="dropdown-item" href="edit.html">
+                                                        <i class="fa fa-edit"></i>
+                                                        Редактировать</a>
+                                                    <a class="dropdown-item" href="security.html">
+                                                        <i class="fa fa-lock"></i>
+                                                        Безопасность</a>
+                                                    <a class="dropdown-item" href="status.html">
+                                                        <i class="fa fa-sun"></i>
+                                                        Установить статус</a>
+                                                    <a class="dropdown-item" href="media.html">
+                                                        <i class="fa fa-camera"></i>
+                                                        Загрузить аватар
+                                                    </a>
+                                                    <a href="#" class="dropdown-item" onclick="return confirm('are you sure?');">
+                                                        <i class="fa fa-window-close"></i>
+                                                        Удалить
+                                                    </a>
+                                                </div>
+
+
+                                                <span class="text-truncate text-truncate-xl"><?php echo $item['position']; ?></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body p-0 collapse show">
+                                        <div class="p-3">
+                                            <a href="tel:<?php echo $item['phone']; ?>" class="mt-1 d-block fs-sm fw-400 text-dark">
+                                                <i class="fas fa-mobile-alt text-muted mr-2"></i><?php echo $item['phone']; ?></a>
+                                            <a href="mailto:<?php echo $item['email']; ?>" class="mt-1 d-block fs-sm fw-400 text-dark">
+                                                <i class="fas fa-mouse-pointer text-muted mr-2"></i><?php echo $item['email']; ?></a>
+                                            <address class="fs-sm fw-400 mt-4 text-muted">
+                                                <i class="fas fa-map-pin mr-2"></i><?php echo $item['address']; ?></address>
+
+                                            <div class="d-flex flex-row">
+                                                <a href="javascript:void(0);" class="mr-2 fs-xxl" style="color:#4680C2">
+                                                    <i class="fab fa-vk"></i>
+                                                </a>
+                                                <a href="javascript:void(0);" class="mr-2 fs-xxl" style="color:#38A1F3">
+                                                    <i class="fab fa-telegram"></i>
+                                                </a>
+                                                <a href="javascript:void(0);" class="mr-2 fs-xxl" style="color:#E1306C">
+                                                    <i class="fab fa-instagram"></i>
                                                 </a>
                                             </div>
 
-
-                                            <span class="text-truncate text-truncate-xl"><?php echo $item['position']; ?></span>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="card-body p-0 collapse show">
-                                    <div class="p-3">
-                                        <a href="tel:<?php echo $item['phone']; ?>" class="mt-1 d-block fs-sm fw-400 text-dark">
-                                            <i class="fas fa-mobile-alt text-muted mr-2"></i><?php echo $item['phone']; ?></a>
-                                        <a href="mailto:<?php echo $item['email']; ?>" class="mt-1 d-block fs-sm fw-400 text-dark">
-                                            <i class="fas fa-mouse-pointer text-muted mr-2"></i><?php echo $item['email']; ?></a>
-                                        <address class="fs-sm fw-400 mt-4 text-muted">
-                                            <i class="fas fa-map-pin mr-2"></i><?php echo $item['address']; ?></address>
-
-                                        <div class="d-flex flex-row">
-                                            <a href="javascript:void(0);" class="mr-2 fs-xxl" style="color:#4680C2">
-                                                <i class="fab fa-vk"></i>
-                                            </a>
-                                            <a href="javascript:void(0);" class="mr-2 fs-xxl" style="color:#38A1F3">
-                                                <i class="fab fa-telegram"></i>
-                                            </a>
-                                            <a href="javascript:void(0);" class="mr-2 fs-xxl" style="color:#E1306C">
-                                                <i class="fab fa-instagram"></i>
-                                            </a>
-                                        </div>
-
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                    <?php elseif($_SESSION['role'] == 'user'): ?>
 
-                <?php elseif($_SESSION['role'] == 'user'): ?>
+    <!--                    Если USER, то он не может ДОБАВИТЬ пользователя и ИЗМЕНЯТЬ его-->
 
-<!--                    Если USER, то он не может ДОБАВИТЬ пользователя и ИЗМЕНЯТЬ его-->
+                            <div class="col-xl-4">
+                                <div id="<?php echo "c_" . $item['id']; ?>" class="card border shadow-0 mb-g shadow-sm-hover" data-filter-tags="<?php echo $item['name']; ?>">
+                                    <div class="card-body border-faded border-top-0 border-left-0 border-right-0 rounded-top">
+                                        <div class="d-flex flex-row align-items-center">
+                                                    <span class="status status-<?php echo $item['status']; ?> mr-3">
+                                                        <span class="rounded-circle profile-image d-block " style="background-image:url('<?php echo $item['img']; ?>'); background-size: cover;"></span>
+                                                    </span>
+                                            <button class="js-expand-btn btn btn-sm btn-default d-none" data-toggle="collapse" data-target="#<?php echo "c_" . $item['id']; ?> > .card-body + .card-body" aria-expanded="false">
+                                                <span class="collapsed-hidden">+</span>
+                                                <span class="collapsed-reveal">-</span>
+                                            </button>
+                                            <div class="info-card-text flex-1">
+                                                <a href="javascript:void(0);" class="fs-xl text-truncate text-truncate-lg text-secondary" data-toggle="dropdown" aria-expanded="false">
+                                                  <?php echo $item['name']; ?>
+                                                </a>
 
-                        <div class="col-xl-4">
-                            <div id="<?php echo "c_" . $item['id']; ?>" class="card border shadow-0 mb-g shadow-sm-hover" data-filter-tags="<?php echo $item['name']; ?>">
-                                <div class="card-body border-faded border-top-0 border-left-0 border-right-0 rounded-top">
-                                    <div class="d-flex flex-row align-items-center">
-                                                <span class="status status-<?php echo $item['status']; ?> mr-3">
-                                                    <span class="rounded-circle profile-image d-block " style="background-image:url('<?php echo $item['img']; ?>'); background-size: cover;"></span>
-                                                </span>
-                                        <button class="js-expand-btn btn btn-sm btn-default d-none" data-toggle="collapse" data-target="#<?php echo "c_" . $item['id']; ?> > .card-body + .card-body" aria-expanded="false">
-                                            <span class="collapsed-hidden">+</span>
-                                            <span class="collapsed-reveal">-</span>
-                                        </button>
-                                        <div class="info-card-text flex-1">
-                                            <a href="javascript:void(0);" class="fs-xl text-truncate text-truncate-lg text-secondary" data-toggle="dropdown" aria-expanded="false">
-                                              <?php echo $item['name']; ?>
-                                            </a>
-
-                                            <span class="text-truncate text-truncate-xl"><?php echo $item['position']; ?></span>
+                                                <span class="text-truncate text-truncate-xl"><?php echo $item['position']; ?></span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="card-body p-0 collapse show">
-                                    <div class="p-3">
-                                        <a href="tel:<?php echo $item['phone']; ?>" class="mt-1 d-block fs-sm fw-400 text-dark">
-                                            <i class="fas fa-mobile-alt text-muted mr-2"></i><?php echo $item['phone']; ?></a>
-                                        <a href="mailto:<?php echo $item['email']; ?>" class="mt-1 d-block fs-sm fw-400 text-dark">
-                                            <i class="fas fa-mouse-pointer text-muted mr-2"></i><?php echo $item['email']; ?></a>
-                                        <address class="fs-sm fw-400 mt-4 text-muted">
-                                            <i class="fas fa-map-pin mr-2"></i><?php echo $item['address']; ?></address>
+                                    <div class="card-body p-0 collapse show">
+                                        <div class="p-3">
+                                            <a href="tel:<?php echo $item['phone']; ?>" class="mt-1 d-block fs-sm fw-400 text-dark">
+                                                <i class="fas fa-mobile-alt text-muted mr-2"></i><?php echo $item['phone']; ?></a>
+                                            <a href="mailto:<?php echo $item['email']; ?>" class="mt-1 d-block fs-sm fw-400 text-dark">
+                                                <i class="fas fa-mouse-pointer text-muted mr-2"></i><?php echo $item['email']; ?></a>
+                                            <address class="fs-sm fw-400 mt-4 text-muted">
+                                                <i class="fas fa-map-pin mr-2"></i><?php echo $item['address']; ?></address>
 
-                                        <div class="d-flex flex-row">
-                                            <a href="javascript:void(0);" class="mr-2 fs-xxl" style="color:#4680C2">
-                                                <i class="fab fa-vk"></i>
-                                            </a>
-                                            <a href="javascript:void(0);" class="mr-2 fs-xxl" style="color:#38A1F3">
-                                                <i class="fab fa-telegram"></i>
-                                            </a>
-                                            <a href="javascript:void(0);" class="mr-2 fs-xxl" style="color:#E1306C">
-                                                <i class="fab fa-instagram"></i>
-                                            </a>
+                                            <div class="d-flex flex-row">
+                                                <a href="javascript:void(0);" class="mr-2 fs-xxl" style="color:#4680C2">
+                                                    <i class="fab fa-vk"></i>
+                                                </a>
+                                                <a href="javascript:void(0);" class="mr-2 fs-xxl" style="color:#38A1F3">
+                                                    <i class="fab fa-telegram"></i>
+                                                </a>
+                                                <a href="javascript:void(0);" class="mr-2 fs-xxl" style="color:#E1306C">
+                                                    <i class="fab fa-instagram"></i>
+                                                </a>
+                                            </div>
+
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                <?php else: ?>
+                    <?php else: ?>
 
-<!--                        Если пользователь НЕ АВТОРИЗОВАН, то он не может ни ДОБАВИТЬ, ни ПОСМОТРЕТЬ ПОДРОБНУЮ ИНФОРМАЦИЮ о данном пользователе -->
+    <!--                        Если пользователь НЕ АВТОРИЗОВАН, то он не может ни ДОБАВИТЬ, ни ПОСМОТРЕТЬ ПОДРОБНУЮ ИНФОРМАЦИЮ о данном пользователе -->
 
-                        <div class="col-xl-4">
-                            <div id="<?php echo "c_" . $item['id']; ?>" class="card border shadow-0 mb-g shadow-sm-hover" data-filter-tags="<?php echo $item['name']; ?>">
-                                <div class="card-body border-faded border-top-0 border-left-0 border-right-0 rounded-top">
-                                    <div class="d-flex flex-row align-items-center">
-                                        <span class="status status-<?php echo $item['status']; ?> mr-3">
-                                            <span class="rounded-circle profile-image d-block " style="background-image:url('<?php echo $item['img']; ?>'); background-size: cover;"></span>
-                                        </span>
+                            <div class="col-xl-4">
+                                <div id="<?php echo "c_" . $item['id']; ?>" class="card border shadow-0 mb-g shadow-sm-hover" data-filter-tags="<?php echo $item['name']; ?>">
+                                    <div class="card-body border-faded border-top-0 border-left-0 border-right-0 rounded-top">
+                                        <div class="d-flex flex-row align-items-center">
+                                            <span class="status status-<?php echo $item['status']; ?> mr-3">
+                                                <span class="rounded-circle profile-image d-block " style="background-image:url('<?php echo $item['img']; ?>'); background-size: cover;"></span>
+                                            </span>
 
-                                        <div class="info-card-text flex-1">
-                                            <p href="javascript:void(0);" class="fs-xl text-truncate text-truncate-lg text-secondary" data-toggle="dropdown" aria-expanded="false">
-                                              <?php echo $item['name']; ?>
-                                            </p>
+                                            <div class="info-card-text flex-1">
+                                                <p href="javascript:void(0);" class="fs-xl text-truncate text-truncate-lg text-secondary" data-toggle="dropdown" aria-expanded="false">
+                                                  <?php echo $item['name']; ?>
+                                                </p>
 
-                                            <span class="text-truncate text-truncate-xl"><?php echo $item['position']; ?></span>
+                                                <span class="text-truncate text-truncate-xl"><?php echo $item['position']; ?></span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
+                                </div>
                             </div>
-                        </div>
-                <?php endif; ?>
+                    <?php endif; ?>
               <?php endforeach; ?>
 
             </div>

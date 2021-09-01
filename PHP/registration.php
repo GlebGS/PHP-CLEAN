@@ -4,7 +4,7 @@ session_start();
 create_session( "success", "Регистрация успешна." );
 
 $email = $_POST['email'];
-$password = $_POST['password'];
+$password = md5($_POST['password']);
 
 // Функция валидации EMAIL
 function get_email($email){
@@ -34,11 +34,11 @@ function add_user($email, $password)
 
 //  Внести в БАЗУ ДАННЫХ
   $sql = <<<HEARDOC
-    INSERT INTO login (email, password) VALUES (:email, :password)
+    INSERT INTO login (role, email, password) VALUES ('user', :email, :password)
 HEARDOC;
 
   $insert = $pdo->prepare($sql);
-  $insert->execute(['email' => $email, 'password' => md5($password)]);
+  $insert->execute(['email' => $email, 'password' => $password]);
 }
 
 // Создать СЕССИЮ

@@ -29,7 +29,7 @@ HEARDOC;
 }
 
 // Записать ID и ROLE пользователя в СЕССИЮ
-function get_userID($email, $password){
+function get_userStatus($email, $password){
   $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
 
   $sql = <<<HEARDOC
@@ -51,5 +51,5 @@ function create_session( $key, $message ){ $_SESSION["$key"] = $message; }
 // Создать путь
 function redirect($link){ header("Location: /$link"); exit(); }
 
-get_userID($email, $password);
+get_userStatus($email, $password);
 login($email, $password);

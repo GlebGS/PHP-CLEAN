@@ -1,3 +1,5 @@
+<?php session_start(); ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,12 +25,25 @@
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="page_login.php">Войти</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Выйти</a>
-                </li>
+
+                <!--                    ===========================-->
+
+              <?php if (!isset($_SESSION['id'])): ?>
+                  <li class="nav-item">
+                      <a class="nav-link" href="page_login.php">Войти</a>
+                  </li>
+              <?php endif; ?>
+
+                <!--                    ===========================-->
+
+              <?php if (isset($_SESSION['id'])): ?>
+                  <li class="nav-item">
+                      <a class="nav-link" href="PHP/log_out.php">Выйти</a>
+                  </li>
+              <?php endif; ?>
+
+                <!--                    ===========================-->
+
             </ul>
         </div>
     </nav>
@@ -38,10 +53,17 @@
                 <i class='subheader-icon fal fa-plus-circle'></i> Добавить пользователя
             </h1>
 
-
+          <?php if (isset($_SESSION['id'])): ?>
+              <p style="margin: 10px 0 0 30px"><?php echo "UserID: " . "<b>" . $_SESSION['id'] . "</b>" . "&ensp;" . "Role: " . "<b>" . $_SESSION['role'] . "</b>" ?></p>
+          <?php endif; ?>
 
         </div>
-        <form action="">
+
+        <?php if (isset($_SESSION['userLast_ID'])): ?>
+            <?php echo $_SESSION['userLast_ID']; ?>
+        <?php endif; ?>
+
+        <form action="PHP/users/addUsers.php" method="post">
             <div class="row">
                 <div class="col-xl-6">
                     <div id="panel-1" class="panel">
@@ -50,32 +72,40 @@
                                 <h2>Общая информация</h2>
                             </div>
                             <div class="panel-content">
+
+                              <?php if (isset($_SESSION['error_createUser'])): ?>
+                                  <div class="alert alert-danger">
+                                    <?php echo $_SESSION['error_createUser']; unset($_SESSION['error_createUser']); ?>
+                                  </div>
+                              <?php endif; ?>
+
                                 <!-- username -->
                                 <div class="form-group">
                                     <label class="form-label" for="simpleinput">Имя</label>
-                                    <input type="text" id="simpleinput" class="form-control">
+                                    <input type="text" id="simpleinput" name="name" class="form-control">
                                 </div>
 
                                 <!-- title -->
                                 <div class="form-group">
                                     <label class="form-label" for="simpleinput">Место работы</label>
-                                    <input type="text" id="simpleinput" class="form-control">
+                                    <input type="text" id="simpleinput" name="position" class="form-control">
                                 </div>
 
                                 <!-- tel -->
                                 <div class="form-group">
                                     <label class="form-label" for="simpleinput">Номер телефона</label>
-                                    <input type="text" id="simpleinput" class="form-control">
+                                    <input type="text" id="simpleinput" name="phone" class="form-control">
                                 </div>
 
                                 <!-- address -->
                                 <div class="form-group">
                                     <label class="form-label" for="simpleinput">Адрес</label>
-                                    <input type="text" id="simpleinput" class="form-control">
+                                    <input type="text" id="simpleinput" name="address" class="form-control">
                                 </div>
+
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
                 <div class="col-xl-6">
@@ -85,19 +115,38 @@
                                 <h2>Безопасность и Медиа</h2>
                             </div>
                             <div class="panel-content">
+
+                              <?php if ( isset($_SESSION['error_againCreateUserPassword']) ): ?>
+                                  <div class="alert alert-danger">
+                                    <?php echo $_SESSION['error_againCreateUserPassword']; unset($_SESSION['error_againCreateUserPassword']); ?>
+                                  </div>
+                              <?php endif; ?>
+
+                                <?php if ( isset($_SESSION['error_createUserEmail']) ): ?>
+                                    <div class="alert alert-danger">
+                                        <?php echo $_SESSION['error_createUserEmail']; unset($_SESSION['error_createUserEmail']); ?>
+                                    </div>
+                                <?php endif; ?>
+
                                 <!-- email -->
                                 <div class="form-group">
                                     <label class="form-label" for="simpleinput">Email</label>
-                                    <input type="text" id="simpleinput" class="form-control">
+                                    <input type="text" id="simpleinput" name="email" class="form-control">
                                 </div>
+
+                              <?php if ( isset($_SESSION['error_createUserPassword']) ): ?>
+                                  <div class="alert alert-danger">
+                                    <?php echo $_SESSION['error_createUserPassword']; unset($_SESSION['error_createUserPassword']); ?>
+                                  </div>
+                              <?php endif; ?>
 
                                 <!-- password -->
                                 <div class="form-group">
                                     <label class="form-label" for="simpleinput">Пароль</label>
-                                    <input type="password" id="simpleinput" class="form-control">
+                                    <input type="password" id="simpleinput" name="password" class="form-control">
                                 </div>
 
-                                
+
                                 <!-- status -->
                                 <div class="form-group">
                                     <label class="form-label" for="example-select">Выберите статус</label>
@@ -114,7 +163,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
 
@@ -127,6 +176,7 @@
                             <div class="panel-content">
                                 <div class="row">
                                     <div class="col-md-4">
+
                                         <!-- vk -->
                                         <div class="input-group input-group-lg bg-white shadow-inset-2 mb-2">
                                             <div class="input-group-prepend">
@@ -137,10 +187,12 @@
                                                     </span>
                                                 </span>
                                             </div>
-                                            <input type="text" class="form-control border-left-0 bg-transparent pl-0">
+                                            <input type="text" name="vk" class="form-control border-left-0 bg-transparent pl-0">
                                         </div>
+
                                     </div>
                                     <div class="col-md-4">
+
                                         <!-- telegram -->
                                         <div class="input-group input-group-lg bg-white shadow-inset-2 mb-2">
                                             <div class="input-group-prepend">
@@ -151,10 +203,12 @@
                                                     </span>
                                                 </span>
                                             </div>
-                                            <input type="text" class="form-control border-left-0 bg-transparent pl-0">
+                                            <input type="text" name="telegram" class="form-control border-left-0 bg-transparent pl-0">
                                         </div>
+
                                     </div>
                                     <div class="col-md-4">
+
                                         <!-- instagram -->
                                         <div class="input-group input-group-lg bg-white shadow-inset-2 mb-2">
                                             <div class="input-group-prepend">
@@ -165,8 +219,9 @@
                                                     </span>
                                                 </span>
                                             </div>
-                                            <input type="text" class="form-control border-left-0 bg-transparent pl-0">
+                                            <input type="text" name="instagram" class="form-control border-left-0 bg-transparent pl-0">
                                         </div>
+
                                     </div>
                                     <div class="col-md-12 mt-3 d-flex flex-row-reverse">
                                         <button class="btn btn-success">Добавить</button>
@@ -174,7 +229,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
