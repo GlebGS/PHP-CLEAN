@@ -48,20 +48,21 @@ function addData($email, $password){
   $sql =  "INSERT INTO `login`(`role`, `email`, `password`) VALUES ('user','$email', :password)";
   $insert = $pdo->prepare($sql);
 
-//   = $insert->fetchAll(PDO::FETCH_ASSOC);
-  $id = $pdo->lastInsertId();
-
 //  Если PASSWORD не пуст, то ЗАПИСАТЬ и ЗАХЭШИРОВАТЬ ПАРОЛЬ
 //  В противном случае ВЕРНУТЬ ОБРАТНО и ВЫВЕСТИ СООБЩЕНИЕ
   if (!empty($password)){
     $insert->execute(['password' => md5($password)]);
+    $id = $pdo->lastInsertId();
   }else{
     create_session("error_createUserPassword", "<strong>Уведомление!</strong> Вы не указали пароль");
     redirect("create_user.php");
   }
 
   create_session( 'userLast_ID', $id );
+  return $id;
 }
+
+
 
 // Создать СЕССИЮ
 function create_session( $key, $message ){ $_SESSION["$key"] = $message; }
