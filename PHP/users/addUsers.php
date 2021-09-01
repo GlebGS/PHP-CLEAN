@@ -62,8 +62,6 @@ function addData($email, $password){
   return $id;
 }
 
-
-
 // Создать СЕССИЮ
 function create_session( $key, $message ){ $_SESSION["$key"] = $message; }
 // Создать путь
