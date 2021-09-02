@@ -59,10 +59,6 @@
 
         </div>
 
-        <?php if (isset($_SESSION['userLast_ID'])): ?>
-            <?php echo $_SESSION['userLast_ID']; ?>
-        <?php endif; ?>
-
         <form action="PHP/users/addUsers.php" method="post">
             <div class="row">
                 <div class="col-xl-6">
