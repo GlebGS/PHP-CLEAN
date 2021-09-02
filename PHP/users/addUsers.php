@@ -15,7 +15,7 @@ $address = $_POST['address'];
 function get_userInfo($email, $password){
   $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
 
-  $sql = "SELECT email, password FROM login JOIN users ON id = user_id WHERE email = :email";
+  $sql = "SELECT email, password FROM login WHERE email = :email";
   $select = $pdo->prepare($sql);
   $select->execute(['email' => "$email"]);
 
@@ -45,32 +45,26 @@ function get_userInfo($email, $password){
 function addData($email, $password){
   $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
 
-  $sql =  "INSERT INTO login(`role`, `email`, `password`) VALUES ('user','$email', :password)";
+  $sql = "INSERT INTO login(email, password) VALUES (:email, :password)";
   $insert = $pdo->prepare($sql);
 
-//  Если PASSWORD не пуст, то ЗАПИСАТЬ и ЗАХЭШИРОВАТЬ ПАРОЛЬ
-//  В противном случае ВЕРНУТЬ ОБРАТНО и ВЫВЕСТИ СООБЩЕНИЕ
   if (!empty($password)){
-    $insert->execute(['password' => md5($password)]);
-    $id = $pdo->lastInsertId();
+    $insert->execute([ 'email' => $email, 'password' => $password]);
+    $user_id = $pdo->lastInsertId();
 
-    $_SESSION['user_id'] = $id;
+    add_lastUserID($user_id);
   }else{
     create_session("error_createUserPassword", "<strong>Уведомление!</strong> Вы не указали пароль");
     redirect("create_user.php");
   }
 }
 
-// Добавить пользователя в таблицу USERS
-function add_user($name, $position, $phone, $address){
+function add_lastUserID($user_id){
   $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
 
-  $sql = "INSERT INTO users(`user_id`, `name`, `position`, `phone`, `address`) VALUES ( ". $_SESSION['user_id'] .", :name, :position, :phone, :address)";
+  $sql = "INSERT INTO users(user_id) VALUES ('$user_id')";
   $insert = $pdo->prepare($sql);
-
-  if (!empty($name) OR !empty($position) OR !empty($phone) OR !empty($address)){
-    $insert->execute(['name' => $name, 'position' => $position, 'phone' => $phone, 'address' => $address]);
-  }
+  $insert->execute();
 }
 
 // Создать СЕССИЮ
@@ -78,5 +72,4 @@ function create_session( $key, $message ){ $_SESSION["$key"] = $message; }
 // Создать путь
 function redirect($link){ header("Location: /$link"); exit(); }
 
-add_user($name, $position, $phone, $address);
 get_userInfo($email, $password);
