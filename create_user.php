@@ -69,9 +69,9 @@
                             </div>
                             <div class="panel-content">
 
-                              <?php if (isset($_SESSION['error_createUser'])): ?>
+                              <?php if ( isset($_SESSION['error_addUser']) ): ?>
                                   <div class="alert alert-danger">
-                                    <?php echo $_SESSION['error_createUser']; unset($_SESSION['error_createUser']); ?>
+                                    <?php echo $_SESSION['error_addUser']; unset($_SESSION['error_addUser']); ?>
                                   </div>
                               <?php endif; ?>
 

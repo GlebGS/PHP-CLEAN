@@ -36,8 +36,6 @@ function get_userInfo($email, $password){
   }
 
   create_session("create_user", "Профиль успешно обновлен.");
-
-  redirect("create_user.php");
 }
 
 // Записать EMAIL и PASSWORD
@@ -59,12 +57,21 @@ function addData($email, $password){
   }
 }
 
+// Записать пользователя в БД
 function addUser($name, $position, $phone, $address){
   $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
 
   $sql = "INSERT INTO users(user_id, name, position, phone, address) VALUES ('". $_SESSION['user_id']."', :name, :position , :phone, :address)";
   $insert = $pdo->prepare($sql);
-  $insert->execute(['name' => $name, 'position' => $position, 'phone' => $phone, 'address' => $address]);
+
+  if (!empty($name) OR !empty($position) OR !empty($phone) OR !empty($address)){
+    $insert->execute(['name' => $name, 'position' => $position, 'phone' => $phone, 'address' => $address]);
+  }else{
+    create_session("error_addUser", "<strong>Уведомление!</strong> Вы не указали данные");
+    redirect("create_user.php");
+  }
+
+  redirect("users.php");
 }
 
 // Создать СЕССИЮ
