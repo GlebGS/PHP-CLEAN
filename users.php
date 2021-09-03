@@ -138,7 +138,7 @@ eight
             <div class="row" id="js-contacts">
 
                 <?php
-                    $sql = "SELECT * FROM users JOIN login ON user_id = id WHERE user_id > 1";
+                    $sql = "SELECT * FROM users JOIN login ON users.id = login.id WHERE users.id > 1";
                     $select = $pdo->prepare($sql);
                     $select->execute();
                     $user = $select->fetchAll(PDO::FETCH_ASSOC);
