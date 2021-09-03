@@ -45,27 +45,26 @@ function get_userInfo($email, $password){
 function addData($email, $password){
   $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
 
-  $sql = "INSERT INTO login(email, password) VALUES (:email, :password)";
+  $sql = "INSERT INTO login(role, email, password) VALUES ('user', :email, :password)";
   $insert = $pdo->prepare($sql);
 
   if (!empty($password)){
-    $insert->execute([ 'email' => $email, 'password' => $password]);
+    $insert->execute([ 'email' => $email, 'password' => md5($password)]);
     $user_id = $pdo->lastInsertId();
 
-    add_lastUserID($user_id);
+    create_session('user_id', "$user_id");
   }else{
     create_session("error_createUserPassword", "<strong>Уведомление!</strong> Вы не указали пароль");
     redirect("create_user.php");
   }
 }
 
-// Записать ID в USER_ID
-function add_lastUserID($user_id){
+function addUser($name, $position, $phone, $address){
   $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
 
-  $sql = "INSERT INTO users(user_id) VALUES ('$user_id')";
+  $sql = "INSERT INTO users(user_id, name, position, phone, address) VALUES ('". $_SESSION['user_id']."', :name, :position , :phone, :address)";
   $insert = $pdo->prepare($sql);
-  $insert->execute();
+  $insert->execute(['name' => $name, 'position' => $position, 'phone' => $phone, 'address' => $address]);
 }
 
 // Создать СЕССИЮ
@@ -74,3 +73,4 @@ function create_session( $key, $message ){ $_SESSION["$key"] = $message; }
 function redirect($link){ header("Location: /$link"); exit(); }
 
 get_userInfo($email, $password);
+addUser($name, $position, $phone, $address);
