@@ -173,6 +173,12 @@
                                 <div class="row">
                                     <div class="col-md-4">
 
+                                      <?php if ( isset($_SESSION['error_addUser']) ): ?>
+                                          <div class="alert alert-danger">
+                                            <?php echo $_SESSION['error_addUser']; unset($_SESSION['error_addUser']); ?>
+                                          </div>
+                                      <?php endif; ?>
+
                                         <!-- vk -->
                                         <div class="input-group input-group-lg bg-white shadow-inset-2 mb-2">
                                             <div class="input-group-prepend">

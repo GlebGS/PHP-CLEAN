@@ -11,6 +11,11 @@ $position = $_POST['position'];
 $phone = $_POST['phone'];
 $address = $_POST['address'];
 
+// LINK
+$vk = $_POST['vk'];
+$telegram = $_POST['telegram'];
+$instagram = $_POST['instagram'];
+
 // Проверить, существует ли такой Email
 function get_userInfo($email, $password){
   $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
@@ -71,6 +76,22 @@ function addUser($name, $position, $phone, $address){
     redirect("create_user.php");
   }
 
+}
+
+// Записать LINK
+function addLinkUser($vk, $telegram, $instagram){
+  $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
+
+  $sql = "INSERT INTO links(user_id, vk, telegram, instagram) VALUES ('". $_SESSION['user_id']."', :vk, :telegram, :instagram)";
+  $insert = $pdo->prepare($sql);
+
+  if (!empty($vk) OR !empty($telegram) OR !empty($instagram)){
+    $insert->execute(['vk' => $vk, 'telegram' => $telegram, 'instagram' => $instagram]);
+  }else{
+    create_session("error_addUser", "<strong>Уведомление!</strong> Вы не указали данные");
+    redirect("create_user.php");
+  }
+
   redirect("users.php");
 }
 
@@ -81,3 +102,4 @@ function redirect($link){ header("Location: /$link"); exit(); }
 
 get_userInfo($email, $password);
 addUser($name, $position, $phone, $address);
+addLinkUser($vk, $telegram, $instagram);
