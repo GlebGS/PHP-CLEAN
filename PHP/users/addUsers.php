@@ -59,6 +59,7 @@ function addData($email, $password){
   }
 }
 
+// Записать ID в USER_ID
 function add_lastUserID($user_id){
   $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
 
