@@ -69,6 +69,7 @@ function addUser($name, $position, $phone, $address){
   $sql = "INSERT INTO users(user_id, name, position, phone, address) VALUES ('". $_SESSION['user_id']."', :name, :position , :phone, :address)";
   $insert = $pdo->prepare($sql);
 
+//  Проверить, не пусты ли ПОЛЯ ВВОДА
   if (!empty($name) OR !empty($position) OR !empty($phone) OR !empty($address)){
     $insert->execute(['name' => $name, 'position' => $position, 'phone' => $phone, 'address' => $address]);
   }else{
@@ -85,6 +86,7 @@ function addLinkUser($vk, $telegram, $instagram){
   $sql = "INSERT INTO links(user_id, vk, telegram, instagram) VALUES ('". $_SESSION['user_id']."', :vk, :telegram, :instagram)";
   $insert = $pdo->prepare($sql);
 
+//  Проверить, не пусты ли ПОЛЯ ВВОДА
   if (!empty($vk) OR !empty($telegram) OR !empty($instagram)){
     $insert->execute(['vk' => $vk, 'telegram' => $telegram, 'instagram' => $instagram]);
   }else{
