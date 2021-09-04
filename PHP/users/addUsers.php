@@ -51,7 +51,7 @@ function get_userInfo($email, $password){
 function addData($email, $password){
   $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
 
-  $sql = "INSERT INTO login(user_id, role, email, password) VALUES ('". $_SESSION['user_id']."', 'user', :email, :password)";
+  $sql = "INSERT INTO login(role, email, password) VALUES ('user', :email, :password)";
   $insert = $pdo->prepare($sql);
 
   if (!empty($password)){
@@ -82,23 +82,6 @@ function addUser($name, $position, $phone, $address){
 
 }
 
-// Записать LINK
-function addLinkUser($vk, $telegram, $instagram){
-  $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
-
-  $sql = "INSERT INTO links(user_id, vk, telegram, instagram) VALUES ('". $_SESSION['user_id']."', :vk, :telegram, :instagram)";
-  $insert = $pdo->prepare($sql);
-
-//  Проверить, не пусты ли ПОЛЯ ВВОДА
-  if (!empty($vk) OR !empty($telegram) OR !empty($instagram)){
-    $insert->execute(['vk' => $vk, 'telegram' => $telegram, 'instagram' => $instagram]);
-  }else{
-    create_session("error_addUser", "<strong>Уведомление!</strong> Вы не указали данные");
-    redirect("create_user.php");
-  }
-
-}
-
 // Create status USER
 function status($status){
   $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
@@ -118,6 +101,23 @@ function status($status){
   $sql = "UPDATE users SET status='$status' WHERE user_id='". $_SESSION['user_id'] ."'";
   $update = $pdo->prepare($sql);
   $update->execute();
+
+}
+
+// Записать LINK
+function addLinkUser($vk, $telegram, $instagram){
+  $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
+
+  $sql = "INSERT INTO links(user_id, vk, telegram, instagram) VALUES ('". $_SESSION['user_id']."', :vk, :telegram, :instagram)";
+  $insert = $pdo->prepare($sql);
+
+//  Проверить, не пусты ли ПОЛЯ ВВОДА
+  if (!empty($vk) OR !empty($telegram) OR !empty($instagram)){
+    $insert->execute(['vk' => $vk, 'telegram' => $telegram, 'instagram' => $instagram]);
+  }else{
+    create_session("error_addUser", "<strong>Уведомление!</strong> Вы не указали данные");
+    redirect("create_user.php");
+  }
 
   redirect("users.php");
 }
