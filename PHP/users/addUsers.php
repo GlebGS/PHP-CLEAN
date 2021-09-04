@@ -129,5 +129,5 @@ function redirect($link){ header("Location: /$link"); exit(); }
 
 get_userInfo($email, $password);
 addUser($name, $position, $phone, $address);
-addLinkUser($vk, $telegram, $instagram);
 status($status);
+addLinkUser($vk, $telegram, $instagram);
