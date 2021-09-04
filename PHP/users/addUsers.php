@@ -19,9 +19,13 @@ $instagram = $_POST['instagram'];
 // STATUS
 $status = $_POST['select'];
 
+// FILES
+$avatarName = $_FILES['avatar']['name'];
+$avatarTmp = $_FILES['avatar']['tmp_name'];
+
 // Проверить, существует ли такой Email
 function get_userInfo($email, $password){
-  $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
+  $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin;charset=UTF8", 'root', '');
 
   $sql = "SELECT email, password FROM login WHERE email = :email";
   $select = $pdo->prepare($sql);
@@ -49,7 +53,7 @@ function get_userInfo($email, $password){
 // Записать EMAIL и PASSWORD
 // получить последний ID
 function addData($email, $password){
-  $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
+  $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin;charset=UTF8", 'root', '');
 
   $sql = "INSERT INTO login(role, email, password) VALUES ('user', :email, :password)";
   $insert = $pdo->prepare($sql);
@@ -67,7 +71,7 @@ function addData($email, $password){
 
 // Записать пользователя в БД
 function addUser($name, $position, $phone, $address){
-  $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
+  $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin;charset=UTF8", 'root', '');
 
   $sql = "INSERT INTO users(user_id, name, position, phone, address) VALUES ('". $_SESSION['user_id']."', :name, :position , :phone, :address)";
   $insert = $pdo->prepare($sql);
@@ -84,7 +88,7 @@ function addUser($name, $position, $phone, $address){
 
 // Create status USER
 function status($status){
-  $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
+  $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin;charset=UTF8", 'root', '');
 
   switch ($status) {
     case 'Онлайн':
@@ -101,12 +105,19 @@ function status($status){
   $sql = "UPDATE users SET status='$status' WHERE user_id='". $_SESSION['user_id'] ."'";
   $update = $pdo->prepare($sql);
   $update->execute();
+}
 
+function avatar($avatarName){
+  $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin;charset=UTF8", 'root', '');
+
+  $sql = "UPDATE users SET img='$avatarName' WHERE user_id='". $_SESSION['user_id'] ."'";
+  $update = $pdo->prepare($sql);
+  $update->execute();
 }
 
 // Записать LINK
 function addLinkUser($vk, $telegram, $instagram){
-  $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
+  $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin;charset=UTF8", 'root', '');
 
   $sql = "INSERT INTO links(user_id, vk, telegram, instagram) VALUES ('". $_SESSION['user_id']."', :vk, :telegram, :instagram)";
   $insert = $pdo->prepare($sql);
@@ -130,4 +141,5 @@ function redirect($link){ header("Location: /$link"); exit(); }
 get_userInfo($email, $password);
 addUser($name, $position, $phone, $address);
 status($status);
+avatar($avatarName);
 addLinkUser($vk, $telegram, $instagram);
