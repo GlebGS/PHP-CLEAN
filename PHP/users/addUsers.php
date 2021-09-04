@@ -16,6 +16,9 @@ $vk = $_POST['vk'];
 $telegram = $_POST['telegram'];
 $instagram = $_POST['instagram'];
 
+// STATUS
+$status = $_POST['select'];
+
 // Проверить, существует ли такой Email
 function get_userInfo($email, $password){
   $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
@@ -48,7 +51,7 @@ function get_userInfo($email, $password){
 function addData($email, $password){
   $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
 
-  $sql = "INSERT INTO login(role, email, password) VALUES ('user', :email, :password)";
+  $sql = "INSERT INTO login(user_id, role, email, password) VALUES ('". $_SESSION['user_id']."', 'user', :email, :password)";
   $insert = $pdo->prepare($sql);
 
   if (!empty($password)){
@@ -94,6 +97,28 @@ function addLinkUser($vk, $telegram, $instagram){
     redirect("create_user.php");
   }
 
+}
+
+// Create status USER
+function status($status){
+  $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
+
+  switch ($status) {
+    case 'Онлайн':
+      $status = 'success';
+      break;
+    case 'Отошел':
+      $status = 'warning';
+      break;
+    case 'Не беспокоить':
+      $status = 'danger';
+      break;
+  }
+
+  $sql = "UPDATE users SET status='$status' WHERE user_id='". $_SESSION['user_id'] ."'";
+  $update = $pdo->prepare($sql);
+  $update->execute();
+
   redirect("users.php");
 }
 
@@ -105,3 +130,4 @@ function redirect($link){ header("Location: /$link"); exit(); }
 get_userInfo($email, $password);
 addUser($name, $position, $phone, $address);
 addLinkUser($vk, $telegram, $instagram);
+status($status);
