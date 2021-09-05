@@ -36,7 +36,7 @@ function get_userInfo($email, $password){
 //  Если Email пуст, вывести СООБЩЕНИЕ и ВЕРНУТЬ ОБРАТНО
   if (empty($email)) {
     create_session("error_againCreateUserPassword", "<strong>Уведомление!</strong> Вы не указали Email");
-//    redirect("create_user.php");
+    redirect("create_user.php");
   }
 
 //  Если такого EMAIL нет, то добавить пользователя
@@ -65,7 +65,7 @@ function addData($email, $password){
     create_session('user_id', "$user_id");
   }else{
     create_session("error_createUserPassword", "<strong>Уведомление!</strong> Вы не указали пароль");
-//    redirect("create_user.php");
+    redirect("create_user.php");
   }
 }
 
@@ -81,7 +81,7 @@ function addUser($name, $position, $phone, $address){
     $insert->execute(['name' => $name, 'position' => $position, 'phone' => $phone, 'address' => $address]);
   }else{
     create_session("error_addUser", "<strong>Уведомление!</strong> Вы не указали данные");
-//    redirect("create_user.php");
+    redirect("create_user.php");
   }
 
 }
@@ -134,7 +134,7 @@ function addLinkUser($vk, $telegram, $instagram){
     redirect("create_user.php");
   }
 
-//  redirect("users.php");
+  redirect("users.php");
 }
 
 // Создать СЕССИЮ
