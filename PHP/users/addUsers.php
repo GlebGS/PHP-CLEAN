@@ -20,8 +20,7 @@ $instagram = $_POST['instagram'];
 $status = $_POST['select'];
 
 // FILES
-$avatarName = $_FILES['avatar']['name'];
-$avatarTmp = $_FILES['avatar']['tmp_name'];
+$avatar = $_FILES['avatar']['name'];
 
 // Проверить, существует ли такой Email
 function get_userInfo($email, $password){
@@ -107,10 +106,10 @@ function status($status){
   $update->execute();
 }
 
-function avatar($avatarName){
+function avatar($avatar){
   $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin;charset=UTF8", 'root', '');
 
-  $sql = "UPDATE users SET img='$avatarName' WHERE user_id='". $_SESSION['user_id'] ."'";
+  $sql = "UPDATE users SET img='$avatar' WHERE user_id='". $_SESSION['user_id'] ."'";
   $update = $pdo->prepare($sql);
   $update->execute();
 }
@@ -141,5 +140,5 @@ function redirect($link){ header("Location: /$link"); exit(); }
 get_userInfo($email, $password);
 addUser($name, $position, $phone, $address);
 status($status);
-avatar($avatarName);
+avatar($avatar);
 addLinkUser($vk, $telegram, $instagram);
