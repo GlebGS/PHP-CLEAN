@@ -118,7 +118,7 @@ eight
 
                       <div class="border-faded bg-faded p-3 mb-g d-flex mt-3">
 
-                          <input type="text" id="js-filter-contacts" name="filter-contacts" class="form-control shadow-inset-2 form-control-lg" placeholder="Найти пользователя">
+                          <label for="js-filter-contacts"></label><input type="text" id="js-filter-contacts" name="filter-contacts" class="form-control shadow-inset-2 form-control-lg" placeholder="Найти пользователя">
 
                           <div class="btn-group btn-group-lg btn-group-toggle hidden-lg-down ml-3" data-toggle="buttons">
                               <label class="btn btn-default active">
@@ -333,7 +333,7 @@ HEARDOC;
 
             $('input[type=radio][name=contactview]').change(function()
                 {
-                    if (this.value == 'grid')
+                    if (this.value === 'grid')
                     {
                         $('#js-contacts .card').removeClassPrefix('mb-').addClass('mb-g');
                         $('#js-contacts .col-xl-12').removeClassPrefix('col-xl-').addClass('col-xl-4');
@@ -341,7 +341,7 @@ HEARDOC;
                         $('#js-contacts .card-body + .card-body').addClass('show');
 
                     }
-                    else if (this.value == 'table')
+                    else if (this.value === 'table')
                     {
                         $('#js-contacts .card').removeClassPrefix('mb-').addClass('mb-1');
                         $('#js-contacts .col-xl-4').removeClassPrefix('col-xl-').addClass('col-xl-12');
