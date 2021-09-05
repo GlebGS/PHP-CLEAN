@@ -112,7 +112,7 @@ function status($status)
 function avatar($avatarName, $avatarTmp){
   $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin;charset=UTF8", 'root', '');
 
-  if (move_uploaded_file($avatarTmp, 'D:\OpenServer\OpenServer\domains\tasks2\img\demo\avatars' . $avatarName)){
+  if (move_uploaded_file($avatarTmp, 'D:\OpenServer\OpenServer\domains\tasks2\img\demo\avatars' . '/' . $avatarName)){
     $sql = "UPDATE users SET img='img/demo/avatars/$avatarName' WHERE user_id='". $_SESSION['user_id'] ."'";
     $update = $pdo->prepare($sql);
     $update->execute();
