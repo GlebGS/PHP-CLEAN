@@ -106,6 +106,7 @@ function status($status){
   $update->execute();
 }
 
+// Записать IMG в БД
 function avatar($avatar){
   $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin;charset=UTF8", 'root', '');
 
