@@ -20,7 +20,8 @@ $instagram = $_POST['instagram'];
 $status = $_POST['select'];
 
 // FILES
-$avatar = $_FILES['avatar']['name'];
+$avatarName = $_FILES['avatar']['name'];
+$avatarTmp = $_FILES['avatar']['tmp_name'];
 
 // Проверить, существует ли такой Email
 function get_userInfo($email, $password){
@@ -35,7 +36,7 @@ function get_userInfo($email, $password){
 //  Если Email пуст, вывести СООБЩЕНИЕ и ВЕРНУТЬ ОБРАТНО
   if (empty($email)) {
     create_session("error_againCreateUserPassword", "<strong>Уведомление!</strong> Вы не указали Email");
-    redirect("create_user.php");
+//    redirect("create_user.php");
   }
 
 //  Если такого EMAIL нет, то добавить пользователя
@@ -64,7 +65,7 @@ function addData($email, $password){
     create_session('user_id', "$user_id");
   }else{
     create_session("error_createUserPassword", "<strong>Уведомление!</strong> Вы не указали пароль");
-    redirect("create_user.php");
+//    redirect("create_user.php");
   }
 }
 
@@ -80,13 +81,14 @@ function addUser($name, $position, $phone, $address){
     $insert->execute(['name' => $name, 'position' => $position, 'phone' => $phone, 'address' => $address]);
   }else{
     create_session("error_addUser", "<strong>Уведомление!</strong> Вы не указали данные");
-    redirect("create_user.php");
+//    redirect("create_user.php");
   }
 
 }
 
 // Create status USER
-function status($status){
+function status($status)
+{
   $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin;charset=UTF8", 'root', '');
 
   switch ($status) {
@@ -101,18 +103,20 @@ function status($status){
       break;
   }
 
-  $sql = "UPDATE users SET status='$status' WHERE user_id='". $_SESSION['user_id'] ."'";
+  $sql = "UPDATE users SET status='$status' WHERE user_id='" . $_SESSION['user_id'] . "'";
   $update = $pdo->prepare($sql);
   $update->execute();
 }
 
 // Записать IMG в БД
-function avatar($avatar){
+function avatar($avatarName, $avatarTmp){
   $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin;charset=UTF8", 'root', '');
 
-  $sql = "UPDATE users SET img='$avatar' WHERE user_id='". $_SESSION['user_id'] ."'";
-  $update = $pdo->prepare($sql);
-  $update->execute();
+  if (move_uploaded_file($avatarTmp, 'D:\OpenServer\OpenServer\domains\tasks2\img\demo\avatars' . $avatarName)){
+    $sql = "UPDATE users SET img='img/demo/avatars/$avatarName' WHERE user_id='". $_SESSION['user_id'] ."'";
+    $update = $pdo->prepare($sql);
+    $update->execute();
+  }
 }
 
 // Записать LINK
@@ -130,7 +134,7 @@ function addLinkUser($vk, $telegram, $instagram){
     redirect("create_user.php");
   }
 
-  redirect("users.php");
+//  redirect("users.php");
 }
 
 // Создать СЕССИЮ
@@ -141,5 +145,5 @@ function redirect($link){ header("Location: /$link"); exit(); }
 get_userInfo($email, $password);
 addUser($name, $position, $phone, $address);
 status($status);
-avatar($avatar);
+avatar($avatarName, $avatarTmp);
 addLinkUser($vk, $telegram, $instagram);
