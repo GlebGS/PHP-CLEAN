@@ -11,7 +11,7 @@ $position = $_POST['position'];
 $phone = $_POST['phone'];
 $address = $_POST['address'];
 
-// LINK
+// LINKS
 $vk = $_POST['vk'];
 $telegram = $_POST['telegram'];
 $instagram = $_POST['instagram'];
