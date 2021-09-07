@@ -216,7 +216,7 @@ HEARDOC;
 
 <!--                                                  Получить нужного USER -->
 
-                                                  <?php if ($item['id'] === $_SESSION['id']): ?>
+                                                  <?php if ($item['user_id'] === $_SESSION['id']): ?>
 
                                                       <a href="javascript:void(0);" class="fs-xl text-truncate text-truncate-lg text-info" data-toggle="dropdown" aria-expanded="false">
                                                         <?php echo $item['name']; ?>

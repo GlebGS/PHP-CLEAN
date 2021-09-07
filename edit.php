@@ -1,7 +1,5 @@
 <?php session_start();
 
-$id = $_REQUEST['id'];
-
 $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
 
 $sql = <<<HEARDOC
@@ -77,7 +75,12 @@ $user = $select->fetchAll(PDO::FETCH_ASSOC);
 
 <!--      Если ADMIN, то может видеть все данные-->
         <?php if ( $_SESSION['role'] == 'admin' ): ?>
-          <?php if ($item['user_id'] == $id): ?>
+
+<!--        Получить ID из URL -->
+        <?php $id = $_REQUEST['id']; ?>
+
+<!--        Если USER_ID равно $id, то TRUE -->
+          <?php if ($item['user_id'] === $id): ?>
               <form action="">
                   <div class="row">
                       <div class="col-xl-6">
