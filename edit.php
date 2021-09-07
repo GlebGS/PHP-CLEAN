@@ -1,4 +1,5 @@
 <?php session_start();
+error_reporting(0);
 
 $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
 
@@ -81,7 +82,7 @@ $user = $select->fetchAll(PDO::FETCH_ASSOC);
 
 <!--        Если USER_ID равно $id, то TRUE -->
           <?php if ($item['user_id'] === $id): ?>
-              <form action="">
+              <form action="PHP/users/editUser.php?id=<?php echo $item['user_id']; ?>" method="post">
                   <div class="row">
                       <div class="col-xl-6">
                           <div id="panel-1" class="panel">
@@ -95,25 +96,25 @@ $user = $select->fetchAll(PDO::FETCH_ASSOC);
                                       <!-- username -->
                                       <div class="form-group">
                                           <label class="form-label" for="simpleinput">Имя</label>
-                                          <input type="text" id="simpleinput" class="form-control" value="<?php echo $item['name']; ?>">
+                                          <input type="text" id="simpleinput" name="name" class="form-control" value="<?php echo $item['name']; ?>">
                                       </div>
 
                                       <!-- title -->
                                       <div class="form-group">
                                           <label class="form-label" for="simpleinput">Место работы</label>
-                                          <input type="text" id="simpleinput" class="form-control" value="<?php echo $item['position'] ?>">
+                                          <input type="text" id="simpleinput" name="position" class="form-control" value="<?php echo $item['position'] ?>">
                                       </div>
 
                                       <!-- tel -->
                                       <div class="form-group">
                                           <label class="form-label" for="simpleinput">Номер телефона</label>
-                                          <input type="text" id="simpleinput" class="form-control" value="<?php echo $item['phone']; ?>">
+                                          <input type="text" id="simpleinput" name="phone" class="form-control" value="<?php echo $item['phone']; ?>">
                                       </div>
 
                                       <!-- address -->
                                       <div class="form-group">
                                           <label class="form-label" for="simpleinput">Адрес</label>
-                                          <input type="text" id="simpleinput" class="form-control" value="<?php echo $item['address']; ?>">
+                                          <input type="text" id="simpleinput" name="address" class="form-control" value="<?php echo $item['address']; ?>">
                                       </div>
                                       <div class="col-md-12 mt-3 d-flex flex-row-reverse">
                                           <button class="btn btn-warning">Редактировать</button>
@@ -132,13 +133,16 @@ $user = $select->fetchAll(PDO::FETCH_ASSOC);
 
 <!--      Если USER, то может видеть только свои данные-->
         <?php if ($_SESSION['role'] == 'user'): ?>
-          <?php if ( $item['id'] === $_SESSION['id'] ): ?>
 
-            <form action="">
+<!--        Получить ID из URL -->
+          <?php $id = $_REQUEST['id']; ?>
+
+          <?php if ($item['user_id'] === $id): ?>
+
+            <form action="PHP/users/editUser.php?id=<?php echo $item['user_id']; ?>" method="post">
                 <div class="row">
                     <div class="col-xl-6">
                         <div id="panel-1" class="panel">
-
 
                             <div class="panel-container">
                                 <div class="panel-hdr">
@@ -148,25 +152,25 @@ $user = $select->fetchAll(PDO::FETCH_ASSOC);
                                     <!-- username -->
                                     <div class="form-group">
                                         <label class="form-label" for="simpleinput">Имя</label>
-                                        <input type="text" id="simpleinput" class="form-control" value="<?php echo $item['name']; ?>">
+                                        <input type="text" id="simpleinput" name="name" class="form-control" value="<?php echo $item['name']; ?>">
                                     </div>
 
                                     <!-- title -->
                                     <div class="form-group">
                                         <label class="form-label" for="simpleinput">Место работы</label>
-                                        <input type="text" id="simpleinput" class="form-control" value="<?php echo $item['position'] ?>">
+                                        <input type="text" id="simpleinput" name="position" class="form-control" value="<?php echo $item['position'] ?>">
                                     </div>
 
                                     <!-- tel -->
                                     <div class="form-group">
                                         <label class="form-label" for="simpleinput">Номер телефона</label>
-                                        <input type="text" id="simpleinput" class="form-control" value="<?php echo $item['phone']; ?>">
+                                        <input type="text" id="simpleinput" name="phone" class="form-control" value="<?php echo $item['phone']; ?>">
                                     </div>
 
                                     <!-- address -->
                                     <div class="form-group">
                                         <label class="form-label" for="simpleinput">Адрес</label>
-                                        <input type="text" id="simpleinput" class="form-control" value="<?php echo $item['address']; ?>">
+                                        <input type="text" id="simpleinput" name="address" class="form-control" value="<?php echo $item['address']; ?>">
                                     </div>
                                     <div class="col-md-12 mt-3 d-flex flex-row-reverse">
                                         <button class="btn btn-warning">Редактировать</button>

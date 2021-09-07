@@ -55,10 +55,20 @@ $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
         <main id="js-page-content" role="main" class="page-content mt-3">
 
 <!--                    ===========================-->
+<!--          FLASH-СООБЩЕНИЕ при создание пользователя -->
 
             <?php if (isset($_SESSION['create_user'])): ?>
                 <div class="alert alert-success">
                     <?php echo $_SESSION['create_user']; unset($_SESSION['create_user']); ?>
+                </div>
+            <?php endif; ?>
+
+<!--                    ===========================-->
+<!--          FLASH-СООБЩЕНИЕ при редактирование пользователя -->
+
+            <?php if (isset($_SESSION['edit_user'])): ?>
+                <div class="alert alert-success">
+                  <?php echo $_SESSION['edit_user']; unset($_SESSION['edit_user']); ?>
                 </div>
             <?php endif; ?>
 
@@ -198,7 +208,7 @@ HEARDOC;
                                 </div>
                             </div>
                   <?php elseif(isset($_SESSION['role']) == 'user'): ?>
-                          <!--                    Если USER, то он не может ДОБАВИТЬ пользователя и ИЗМЕНЯТЬ его-->
+<!--                    Если USER, то он не может ДОБАВИТЬ пользователя и ИЗМЕНЯТЬ его-->
 
                             <div class="col-xl-4">
                                 <div id="<?php echo "c_" . $item['id']; ?>" class="card border shadow-0 mb-g shadow-sm-hover" data-filter-tags="<?php echo $item['name']; ?>">
@@ -225,7 +235,7 @@ HEARDOC;
                                                       </a>
 
                                                       <div class="dropdown-menu">
-                                                          <a class="dropdown-item" href="edit.php">
+                                                          <a class="dropdown-item" href="edit.php?id=<?php echo $item['user_id']; ?>">
                                                               <i class="fa fa-edit"></i>
                                                               Редактировать</a>
                                                           <a class="dropdown-item" href="security.html">
