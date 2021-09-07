@@ -40,7 +40,7 @@ function add_editUser($name, $position, $phone, $address){
   $id = $_REQUEST['id'];
 
   $sql = <<<HEARDOC
-    UPDATE `users` 
+    UPDATE `users`
         SET
     name = :name,
     position = :position,
@@ -50,13 +50,11 @@ function add_editUser($name, $position, $phone, $address){
 HEARDOC;
   $update = $pdo->prepare($sql);
   $update->execute([ 'name' => $name, 'position' => $position, 'phone' => $phone, 'address' => $address ]);
-
 }
 
 // Создать СЕССИЮ
 function create_session( $key, $message ){ $_SESSION["$key"] = $message; }
 // Создать путь
 function redirect($link){ header("Location: /$link"); exit(); }
-
 
 get_editUser($name, $position, $phone, $address);
