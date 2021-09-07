@@ -2,35 +2,6 @@
 error_reporting(0);
 
 $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
-
-/*
-
-oliver.kopyov@smartadminwebapp.com
-one
-
-Alita@smartadminwebapp.com
-two
-
-john.cook@smartadminwebapp.com
-three
-
-jim.ketty@smartadminwebapp.com
-four
-
-john.oliver@smartadminwebapp.com
-five
-
-sarah.mcbrook@smartadminwebapp.com
-six
-
-jimmy.fallan@smartadminwebapp.com
-seven
-
-arica.grace@smartadminwebapp.com
-eight
-
- * */
-
 ?>
 
 <!DOCTYPE html>
@@ -177,7 +148,7 @@ HEARDOC;
 
 
                                                 <div class="dropdown-menu">
-                                                    <a class="dropdown-item" href="edit.html">
+                                                    <a class="dropdown-item" href="edit.php?id=<?php echo $item['user_id']; ?> ">
                                                         <i class="fa fa-edit"></i>
                                                         Редактировать</a>
                                                     <a class="dropdown-item" href="security.html">
@@ -226,9 +197,8 @@ HEARDOC;
                                     </div>
                                 </div>
                             </div>
-                    <?php elseif($_SESSION['role'] == 'user'): ?>
-
-    <!--                    Если USER, то он не может ДОБАВИТЬ пользователя и ИЗМЕНЯТЬ его-->
+                  <?php elseif(isset($_SESSION['role']) == 'user'): ?>
+                          <!--                    Если USER, то он не может ДОБАВИТЬ пользователя и ИЗМЕНЯТЬ его-->
 
                             <div class="col-xl-4">
                                 <div id="<?php echo "c_" . $item['id']; ?>" class="card border shadow-0 mb-g shadow-sm-hover" data-filter-tags="<?php echo $item['name']; ?>">
@@ -243,7 +213,41 @@ HEARDOC;
                                             </button>
                                             <div class="info-card-text flex-1">
                                                 <a href="javascript:void(0);" class="fs-xl text-truncate text-truncate-lg text-secondary" data-toggle="dropdown" aria-expanded="false">
-                                                  <?php echo $item['name']; ?>
+
+<!--                                                  Получить нужного USER -->
+
+                                                  <?php if ($item['id'] === $_SESSION['id']): ?>
+
+                                                      <a href="javascript:void(0);" class="fs-xl text-truncate text-truncate-lg text-info" data-toggle="dropdown" aria-expanded="false">
+                                                        <?php echo $item['name']; ?>
+                                                          <i class="fal fas fa-cog fa-fw d-inline-block ml-1 fs-md"></i>
+                                                          <i class="fal fa-angle-down d-inline-block ml-1 fs-md"></i>
+                                                      </a>
+
+                                                      <div class="dropdown-menu">
+                                                          <a class="dropdown-item" href="edit.php">
+                                                              <i class="fa fa-edit"></i>
+                                                              Редактировать</a>
+                                                          <a class="dropdown-item" href="security.html">
+                                                              <i class="fa fa-lock"></i>
+                                                              Безопасность</a>
+                                                          <a class="dropdown-item" href="status.html">
+                                                              <i class="fa fa-sun"></i>
+                                                              Установить статус</a>
+                                                          <a class="dropdown-item" href="media.html">
+                                                              <i class="fa fa-camera"></i>
+                                                              Загрузить аватар
+                                                          </a>
+                                                          <a href="#" class="dropdown-item" onclick="return confirm('are you sure?');">
+                                                              <i class="fa fa-window-close"></i>
+                                                              Удалить
+                                                          </a>
+                                                      </div>
+
+                                                  <?php else:?>
+                                                    <?php echo $item['name']; ?>
+                                                  <?php endif; ?>
+
                                                 </a>
 
                                                 <span class="text-truncate text-truncate-xl"><?php echo $item['position']; ?></span>
@@ -276,7 +280,7 @@ HEARDOC;
                                 </div>
                             </div>
 
-                    <?php else: ?>
+                <?php else: ?>
 
     <!--                        Если пользователь НЕ АВТОРИЗОВАН, то он не может ни ДОБАВИТЬ, ни ПОСМОТРЕТЬ ПОДРОБНУЮ ИНФОРМАЦИЮ о данном пользователе -->
 
