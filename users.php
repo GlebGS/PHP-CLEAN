@@ -2,6 +2,21 @@
 error_reporting(0);
 
 $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
+
+$sql = <<<HEARDOC
+
+    SELECT * 
+        FROM users 
+    INNER JOIN login 
+        ON users.id = login.id
+    INNER JOIN links 
+        ON users.id = links.id
+    WHERE login.id > 1
+
+HEARDOC;
+$select = $pdo->prepare($sql);
+$select->execute();
+$user = $select->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -32,7 +47,15 @@ $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
 
 <!--                    ===========================-->
 
-                    <?php if (!$_SESSION['id']): ?>
+                    <?php if (isset($_SESSION['id'])): ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="page_profile.php?id=<?php echo $_SESSION['id']; ?>">Профиль</a>
+                        </li>
+                    <?php endif; ?>
+
+<!--                    ===========================-->
+
+                    <?php if (!isset($_SESSION['id'])): ?>
                         <li class="nav-item">
                             <a class="nav-link" href="page_login.php">Войти</a>
                         </li>
@@ -40,7 +63,7 @@ $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
 
                     <!--                    ===========================-->
 
-                    <?php if ($_SESSION['id']): ?>
+                    <?php if (isset($_SESSION['id'])): ?>
                         <li class="nav-item">
                             <a class="nav-link" href="PHP/log_out.php">Выйти</a>
                         </li>
@@ -117,21 +140,6 @@ $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
 <!--                ==================================================-->
 
             <div class="row" id="js-contacts">
-
-                <?php
-                    $sql = <<<HEARDOC
-                        SELECT * 
-                            FROM users 
-                        INNER JOIN login 
-                            ON users.id = login.id
-                        INNER JOIN links 
-                            ON users.id = links.id
-                        WHERE login.id > 1
-HEARDOC;
-                    $select = $pdo->prepare($sql);
-                    $select->execute();
-                    $user = $select->fetchAll(PDO::FETCH_ASSOC);
-                ?>
 
               <?php foreach($user as $item): ?>
                     <?php if ($_SESSION['role'] == 'admin'): ?>
