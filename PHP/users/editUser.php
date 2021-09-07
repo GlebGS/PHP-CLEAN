@@ -7,7 +7,7 @@ $position = $_POST['position'];
 $phone = $_POST['phone'];
 $address = $_POST['address'];
 
-// Редактировать ПОЛЬЗОВАТЕЛЯ
+// Найти нужный ID ПОЛЬЗОВАТЕЛЯ
 function get_editUser($name, $position, $phone, $address){
   $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin;charset=UTF8", 'root', '');
 
