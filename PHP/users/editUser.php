@@ -58,8 +58,5 @@ function create_session( $key, $message ){ $_SESSION["$key"] = $message; }
 // Создать путь
 function redirect($link){ header("Location: /$link"); exit(); }
 
-echo '<pre>';
-  print_r(
-    get_editUser($name, $position, $phone, $address)
-  );
-echo '</pre>';
+
+get_editUser($name, $position, $phone, $address);
