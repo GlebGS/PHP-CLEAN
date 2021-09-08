@@ -1,15 +1,12 @@
 <?php session_start();
+
 $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
 
 $id = $_REQUEST['id'];
 
 $sql = <<<HEARDOC
 
-    SELECT * 
-        FROM users 
-    INNER JOIN login 
-        ON users.id = login.id
-    WHERE login.id > 1
+    SELECT * FROM users WHERE user_id = '$id'
 
 HEARDOC;
 $select = $pdo->prepare($sql);
@@ -21,7 +18,7 @@ $user = $select->fetchAll(PDO::FETCH_ASSOC);
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Безопаность</title>
+    <title>Document</title>
     <meta name="description" content="Chartist.html">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no, minimal-ui">
@@ -43,27 +40,27 @@ $user = $select->fetchAll(PDO::FETCH_ASSOC);
             <ul class="navbar-nav ml-auto">
                 <!--                    ===========================-->
 
-                  <?php if (isset($_SESSION['id'])): ?>
-                      <li class="nav-item">
-                          <a class="nav-link" href="page_profile.php?id=<?php echo $_SESSION['id']; ?>">Профиль</a>
-                      </li>
-                  <?php endif; ?>
+              <?php if (isset($_SESSION['id'])): ?>
+                  <li class="nav-item">
+                      <a class="nav-link" href="page_profile.php?id=<?php echo $_SESSION['id']; ?>">Профиль</a>
+                  </li>
+              <?php endif; ?>
 
-                    <!--                    ===========================-->
+                <!--                    ===========================-->
 
-                  <?php if (!isset($_SESSION['id'])): ?>
-                      <li class="nav-item">
-                          <a class="nav-link" href="page_login.php">Войти</a>
-                      </li>
-                  <?php endif; ?>
+              <?php if (!isset($_SESSION['id'])): ?>
+                  <li class="nav-item">
+                      <a class="nav-link" href="page_login.php">Войти</a>
+                  </li>
+              <?php endif; ?>
 
-                    <!--                    ===========================-->
+                <!--                    ===========================-->
 
-                  <?php if (isset($_SESSION['id'])): ?>
-                      <li class="nav-item">
-                          <a class="nav-link" href="PHP/log_out.php">Выйти</a>
-                      </li>
-                  <?php endif; ?>
+              <?php if (isset($_SESSION['id'])): ?>
+                  <li class="nav-item">
+                      <a class="nav-link" href="PHP/log_out.php">Выйти</a>
+                  </li>
+              <?php endif; ?>
 
                 <!--                    ===========================-->
             </ul>
@@ -72,7 +69,7 @@ $user = $select->fetchAll(PDO::FETCH_ASSOC);
     <main id="js-page-content" role="main" class="page-content mt-3">
         <div class="subheader">
             <h1 class="subheader-title">
-                <i class='subheader-icon fal fa-lock'></i> Безопасность
+                <i class='subheader-icon fal fa-sun'></i> Установить статус
             </h1>
 
           <?php if ($_SESSION['id'] ): ?>
@@ -82,64 +79,44 @@ $user = $select->fetchAll(PDO::FETCH_ASSOC);
         </div>
 
 
-
         <?php foreach ($user as $item): ?>
-            <?php if ($item['id'] === $id): ?>
-                <form action="PHP/users/securityUser.php?id=<?php echo $item['user_id']; ?>" method="post">
+            <?php if ($item['id'] == $id): ?>
+
+                <form action="PHP/users/addStatus.php?id=<?php echo $item['user_id']; ?>" method="post"">
                     <div class="row">
                         <div class="col-xl-6">
                             <div id="panel-1" class="panel">
                                 <div class="panel-container">
                                     <div class="panel-hdr">
-                                        <h2>Обновление эл. адреса и пароля</h2>
+                                        <h2>Установка текущего статуса</h2>
                                     </div>
+
                                     <div class="panel-content">
 
-<!--                                      FALSE -->
-
-                                      <?php if ( isset($_SESSION['email_false']) ): ?>
-                                          <div class="alert alert-danger">
-                                            <?php echo $_SESSION['email_false']; unset($_SESSION['email_false']); ?>
-                                          </div>
-                                      <?php endif; ?>
-
-<!--                                      TRUE -->
-
-                                      <?php if ( isset($_SESSION['email_true']) ): ?>
+                                      <?php if ( isset($_SESSION['status']) ): ?>
                                           <div class="alert alert-success">
-                                            <?php echo $_SESSION['email_true']; unset($_SESSION['email_true']); ?>
+                                            <?php echo $_SESSION['status']; unset($_SESSION['status']); ?>
                                           </div>
                                       <?php endif; ?>
 
-<!--                                      DATA FALSE -->
+                                        <div class="row">
+                                            <div class="col-md-4">
 
-                                      <?php if ( isset($_SESSION['data_false']) ): ?>
-                                          <div class="alert alert-danger">
-                                            <?php echo $_SESSION['data_false']; unset($_SESSION['data_false']); ?>
-                                          </div>
-                                      <?php endif; ?>
+                                                <!-- status -->
+                                                <div class="form-group">
+                                                    <label class="form-label" for="example-select">Выберите статус</label>
+                                                    <select class="form-control" name="select" id="example-select">
 
-                                        <!-- email -->
-                                        <div class="form-group">
-                                            <label class="form-label" for="simpleinput">Email</label>
-                                            <input type="text" id="simpleinput" name="email" class="form-control" value="<?php echo $item['email']; ?>">
-                                        </div>
+                                                        <option <?php if ($item['status'] == 'success') echo 'selected'; ?> >Онлайн</option>
+                                                        <option <?php if ($item['status'] == 'warning') echo 'selected'; ?> >Отошел</option>
+                                                        <option <?php if ($item['status'] == 'danger') echo 'selected'; ?> >Не беспокоить</option>
 
-                                        <!-- password -->
-                                        <div class="form-group">
-                                            <label class="form-label" for="simpleinput">Пароль</label>
-                                                <input type="password" id="simpleinput" name="password" class="form-control">
-                                        </div>
-
-                                        <!-- password confirmation-->
-                                        <div class="form-group">
-                                            <label class="form-label" for="simpleinput">Подтверждение пароля</label>
-                                            <input type="password" id="simpleinput" class="form-control">
-                                        </div>
-
-
-                                        <div class="col-md-12 mt-3 d-flex flex-row-reverse">
-                                            <button class="btn btn-warning">Изменить</button>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 mt-3 d-flex flex-row-reverse">
+                                                <button class="btn btn-warning">Set Status</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -150,6 +127,7 @@ $user = $select->fetchAll(PDO::FETCH_ASSOC);
                 </form>
             <?php endif; ?>
         <?php endforeach; ?>
+
 
     </main>
 
