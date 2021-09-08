@@ -86,13 +86,14 @@ $user = $select->fetchAll(PDO::FETCH_ASSOC);
                                         <h2>Текущий аватар</h2>
                                     </div>
 
-                                  <?php if ( isset($_SESSION['img_true']) ): ?>
-                                      <div class="alert alert-success">
-                                        <?php echo $_SESSION['img_true']; unset($_SESSION['img_true']); ?>
-                                      </div>
-                                  <?php endif; ?>
-
                                     <div class="panel-content">
+
+                                      <?php if ( isset($_SESSION['img_true']) ): ?>
+                                          <div class="alert alert-success">
+                                            <?php echo $_SESSION['img_true']; unset($_SESSION['img_true']); ?>
+                                          </div>
+                                      <?php endif; ?>
+
                                         <div class="form-group">
                                             <img src="<?php echo $item['img']; ?>" alt="" class="img-responsive" width="200">
                                         </div>

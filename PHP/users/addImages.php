@@ -10,12 +10,14 @@ function avatar($avatarName, $avatarTmp){
 
   $id = $_REQUEST['id'];
 
+//  Если USER не загрузил картинку записать ДЕФОЛТНУЮ
   if (empty($avatarName) AND empty($avatarTmp)){
     $sql = "UPDATE users SET img='img/demo/avatars/avatar-m.png' WHERE user_id='$id'";
     $update = $pdo->prepare($sql);
     $update->execute();
   }
 
+//  Записать IMG
   if (move_uploaded_file($avatarTmp, 'D:\OpenServer\OpenServer\domains\tasks2\img\demo\avatars' . '/' . $avatarName)){
     create_session('img_true', '<strong>Уведомление!</strong> Аватар успешно изменён');
 
