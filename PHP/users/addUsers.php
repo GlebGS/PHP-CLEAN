@@ -73,7 +73,9 @@ function addData($email, $password){
 function addUser($name, $position, $phone, $address){
   $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin;charset=UTF8", 'root', '');
 
-  $sql = "INSERT INTO users(user_id, name, position, phone, address) VALUES ('". $_SESSION['user_id']."', :name, :position , :phone, :address)";
+  $id = $_REQUEST['id'];
+
+  $sql = "INSERT INTO users(user_id, name, position, phone, address) VALUES ('$id', :name, :position , :phone, :address)";
   $insert = $pdo->prepare($sql);
 
 //  Проверить, не пусты ли ПОЛЯ ВВОДА
@@ -91,6 +93,8 @@ function status($status)
 {
   $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin;charset=UTF8", 'root', '');
 
+  $id = $_REQUEST['id'];
+
   switch ($status) {
     case 'Онлайн':
       $status = 'success';
@@ -103,7 +107,7 @@ function status($status)
       break;
   }
 
-  $sql = "UPDATE users SET status='$status' WHERE user_id='" . $_SESSION['user_id'] . "'";
+  $sql = "UPDATE users SET status='$status' WHERE user_id='$id'";
   $update = $pdo->prepare($sql);
   $update->execute();
 }
@@ -112,8 +116,16 @@ function status($status)
 function avatar($avatarName, $avatarTmp){
   $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin;charset=UTF8", 'root', '');
 
+  $id = $_REQUEST['id'];
+
+  if (empty($avatarName) AND empty($avatarTmp)){
+    $sql = "UPDATE users SET img='img/demo/avatars/avatar-m.png' WHERE user_id='$id'";
+    $update = $pdo->prepare($sql);
+    $update->execute();
+  }
+
   if (move_uploaded_file($avatarTmp, 'D:\OpenServer\OpenServer\domains\tasks2\img\demo\avatars' . '/' . $avatarName)){
-    $sql = "UPDATE users SET img='img/demo/avatars/$avatarName' WHERE user_id='". $_SESSION['user_id'] ."'";
+    $sql = "UPDATE users SET img='img/demo/avatars/$avatarName' WHERE user_id='$id'";
     $update = $pdo->prepare($sql);
     $update->execute();
   }
@@ -123,7 +135,9 @@ function avatar($avatarName, $avatarTmp){
 function addLinkUser($vk, $telegram, $instagram){
   $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin;charset=UTF8", 'root', '');
 
-  $sql = "INSERT INTO links(user_id, vk, telegram, instagram) VALUES ('". $_SESSION['user_id']."', :vk, :telegram, :instagram)";
+  $id = $_REQUEST['id'];
+
+  $sql = "INSERT INTO links(user_id, vk, telegram, instagram) VALUES ('$id', :vk, :telegram, :instagram)";
   $insert = $pdo->prepare($sql);
 
 //  Проверить, не пусты ли ПОЛЯ ВВОДА

@@ -1,3 +1,20 @@
+<?php session_start();
+
+$pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
+
+$id = $_REQUEST['id'];
+
+$sql = <<<HEARDOC
+
+    SELECT * FROM users
+
+HEARDOC;
+$select = $pdo->prepare($sql);
+$select->execute();
+$user = $select->fetchAll(PDO::FETCH_ASSOC);
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,12 +39,31 @@
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="page_login.php">Войти</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Выйти</a>
-                </li>
+                <!--                    ===========================-->
+
+              <?php if (isset($_SESSION['id'])): ?>
+                  <li class="nav-item">
+                      <a class="nav-link" href="page_profile.php?id=<?php echo $_SESSION['id']; ?>">Профиль</a>
+                  </li>
+              <?php endif; ?>
+
+                <!--                    ===========================-->
+
+              <?php if (!isset($_SESSION['id'])): ?>
+                  <li class="nav-item">
+                      <a class="nav-link" href="page_login.php">Войти</a>
+                  </li>
+              <?php endif; ?>
+
+                <!--                    ===========================-->
+
+              <?php if (isset($_SESSION['id'])): ?>
+                  <li class="nav-item">
+                      <a class="nav-link" href="PHP/log_out.php">Выйти</a>
+                  </li>
+              <?php endif; ?>
+
+                <!--                    ===========================-->
             </ul>
         </div>
     </nav>
@@ -38,34 +74,47 @@
             </h1>
 
         </div>
-        <form action="">
-            <div class="row">
-                <div class="col-xl-6">
-                    <div id="panel-1" class="panel">
-                        <div class="panel-container">
-                            <div class="panel-hdr">
-                                <h2>Текущий аватар</h2>
-                            </div>
-                            <div class="panel-content">
-                                <div class="form-group">
-                                    <img src="img/demo/authors/josh.png" alt="" class="img-responsive" width="200">
-                                </div>
 
-                                <div class="form-group">
-                                    <label class="form-label" for="example-fileinput">Выберите аватар</label>
-                                    <input type="file" id="example-fileinput" class="form-control-file">
-                                </div>
+        <?php foreach ($user as $item): ?>
+            <?php if ($item['id'] == $id): ?>
+                <form action="PHP/users/addImages.php?id=<?php echo $item['user_id']; ?>" method="post" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-xl-6">
+                            <div id="panel-1" class="panel">
+                                <div class="panel-container">
+                                    <div class="panel-hdr">
+                                        <h2>Текущий аватар</h2>
+                                    </div>
+
+                                  <?php if ( isset($_SESSION['img_true']) ): ?>
+                                      <div class="alert alert-success">
+                                        <?php echo $_SESSION['img_true']; unset($_SESSION['img_true']); ?>
+                                      </div>
+                                  <?php endif; ?>
+
+                                    <div class="panel-content">
+                                        <div class="form-group">
+                                            <img src="<?php echo $item['img']; ?>" alt="" class="img-responsive" width="200">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="form-label" for="example-fileinput">Выберите аватар</label>
+                                            <input type="file" name="avatar" id="example-fileinput" class="form-control-file">
+                                        </div>
 
 
-                                <div class="col-md-12 mt-3 d-flex flex-row-reverse">
-                                    <button class="btn btn-warning">Загрузить</button>
+                                        <div class="col-md-12 mt-3 d-flex flex-row-reverse">
+                                            <button class="btn btn-warning">Загрузить</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </form>
+                </form>
+            <?php endif; ?>
+        <?php endforeach; ?>
+
     </main>
 
     <script src="js/vendors.bundle.js"></script>

@@ -175,7 +175,7 @@ $user = $select->fetchAll(PDO::FETCH_ASSOC);
                                                     <a class="dropdown-item" href="status.php?id=<?php echo $item['user_id']; ?>">
                                                         <i class="fa fa-sun"></i>
                                                         Установить статус</a>
-                                                    <a class="dropdown-item" href="media.html">
+                                                    <a class="dropdown-item" href="media.php?id=<?php echo $item['user_id']; ?>">
                                                         <i class="fa fa-camera"></i>
                                                         Загрузить аватар
                                                     </a>
@@ -252,7 +252,7 @@ $user = $select->fetchAll(PDO::FETCH_ASSOC);
                                                           <a class="dropdown-item" href="status.php?id=<?php echo $item['user_id']; ?>">
                                                               <i class="fa fa-sun"></i>
                                                               Установить статус</a>
-                                                          <a class="dropdown-item" href="media.html">
+                                                          <a class="dropdown-item" href="media.php?id=<?php echo $item['user_id']; ?>">
                                                               <i class="fa fa-camera"></i>
                                                               Загрузить аватар
                                                           </a>
