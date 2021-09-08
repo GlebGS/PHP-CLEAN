@@ -36,13 +36,13 @@ HEARDOC;
 function addDataSecurity($email, $password){
   $pdo = new PDO("mysql:host=127.0.0.1;dbname=marlin", 'root', '');
 
-  //  ID текущего ПОЛЬЗОВАТЕЛЯ
+//  ID текущего ПОЛЬЗОВАТЕЛЯ
   $id = $_REQUEST['id'];
 
   $sql = "UPDATE login SET email = :email, password = :password WHERE id = '$id'";
-
   $update = $pdo->prepare($sql);
 
+//  Если один из INPUT пуст - FALSE
   if (!empty($email) && !empty($password)){
     $update->execute([ 'email' => $email, 'password' => md5($password) ]);
     create_session('email_true', '<strong>Уведомление!</strong> Данные успешно изменены');
