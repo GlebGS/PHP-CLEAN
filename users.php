@@ -96,6 +96,15 @@ $user = $select->fetchAll(PDO::FETCH_ASSOC);
             <?php endif; ?>
 
 <!--                    ===========================-->
+<!--          FLASH-СООБЩЕНИЕ при редактирование пользователя -->
+
+          <?php if ( isset($_SESSION['delete_user']) ): ?>
+              <div class="alert alert-success">
+                <?php echo $_SESSION['delete_user']; unset($_SESSION['delete_user']); ?>
+              </div>
+          <?php endif; ?>
+
+<!--                    ===========================-->
 
             <div class="subheader">
                 <h1 class="subheader-title">

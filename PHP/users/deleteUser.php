@@ -10,9 +10,15 @@ function delete($id){
         INNER JOIN users INNER JOIN links 
     WHERE login.id = '$id' AND users.user_id = '$id' AND links.user_id = '$id'
 HEARDOC;
-
   $delete = $pdo->prepare($sql);
   $delete->execute();
+
+  if ($_SESSION['role'] == 'user' ){
+    redirect("page_register.php");
+  }else{
+      create_session('delete_user', '<strong>Уведомление!</strong> Пользователь был успешно удалён.');
+      redirect("users.php");
+  }
 }
 
 // Создать СЕССИЮ
