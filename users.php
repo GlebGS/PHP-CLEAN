@@ -179,7 +179,7 @@ $user = $select->fetchAll(PDO::FETCH_ASSOC);
                                                         <i class="fa fa-camera"></i>
                                                         Загрузить аватар
                                                     </a>
-                                                    <a href="#" class="dropdown-item" onclick="return confirm('are you sure?');">
+                                                    <a href="PHP/users/deleteUser.php?id=<?php echo $item['user_id']; ?>" class="dropdown-item" onclick="return confirm('are you sure?');">
                                                         <i class="fa fa-window-close"></i>
                                                         Удалить
                                                     </a>
@@ -256,7 +256,7 @@ $user = $select->fetchAll(PDO::FETCH_ASSOC);
                                                               <i class="fa fa-camera"></i>
                                                               Загрузить аватар
                                                           </a>
-                                                          <a href="#" class="dropdown-item" onclick="return confirm('are you sure?');">
+                                                          <a href="PHP/users/deleteUser.php?id=<?php echo $item['user_id']; ?>" class="dropdown-item" onclick="return confirm('are you sure?');">
                                                               <i class="fa fa-window-close"></i>
                                                               Удалить
                                                           </a>
