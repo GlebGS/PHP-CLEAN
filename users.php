@@ -86,6 +86,7 @@ $user = $select->fetchAll(PDO::FETCH_ASSOC);
                 </div>
             <?php endif; ?>
 
+
 <!--                    ===========================-->
 <!--          FLASH-СООБЩЕНИЕ при редактирование пользователя -->
 
@@ -95,6 +96,7 @@ $user = $select->fetchAll(PDO::FETCH_ASSOC);
                 </div>
             <?php endif; ?>
 
+
 <!--                    ===========================-->
 <!--          FLASH-СООБЩЕНИЕ при редактирование пользователя -->
 
@@ -103,6 +105,7 @@ $user = $select->fetchAll(PDO::FETCH_ASSOC);
                 <?php echo $_SESSION['delete_user']; unset($_SESSION['delete_user']); ?>
               </div>
           <?php endif; ?>
+
 
 <!--                    ===========================-->
 
